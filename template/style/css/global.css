@@ -4,5 +4,234 @@
 }
 body {
   background: #0f0f0f;
+  min-width: 300px;
 }
 /* GENERAL END */
+/* BUTTONS */
+.btn {
+  border-radius: 50px;
+  border-width: 2px;
+  padding: 3px 18px;
+  outline: none !important;
+  -moz-transition: all 0.2s linear;
+  -webkit-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+.btn.btn-default {
+  background: #222222;
+  color: #fff;
+}
+.btn.btn-default:hover,
+.btn.btn-default:focus,
+.btn.btn-default:active,
+.btn.btn-default:active:focus {
+  background: #1c1c1c;;
+  color: #fff;
+  border-color: #ff1e53;
+}
+.btn.btn-primary {
+  background: #ff1e53;
+  border-color: #ff1e53;
+}
+.btn.btn-primary:hover,
+.btn.btn-primary:focus,
+.btn.btn-primary:active,
+.btn.btn-primary:active:focus  {
+  background: #c3143e;
+  border-color: #c3143e;
+}
+/* BUTTONS END */
+/* MENU */
+#menu {
+  position: fixed;
+  overflow: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #222;
+  width: 100%;
+  max-width: 300px;
+  margin-left: -300px;
+  z-index:99998;
+  padding-top: 60px;
+  -moz-transition: margin-left 0.15s linear;
+  -webkit-transition: margin-left 0.15s linear;
+  -o-transition: margin-left 0.15s linear;
+  transition: margin-left 0.15s linear;
+}
+#menu.open {
+  margin-left: 0;
+}
+#menu > ul {
+  margin: 0;
+  padding: 0;
+}
+#menu > ul > li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 20px;
+  padding: 10px 20px;
+  border-bottom: 1px dotted #2b2b2b;
+  float: left;
+  width: 100%;
+}
+#menu > ul > li a {
+  color: #f1f1f1;
+  text-decoration: none;
+}
+#menu > ul > li a i.fa {
+  width: 34px;
+}
+#menu > ul > li.active a i.fa {
+  color: #ff1e53;;
+}
+/* MENU END */
+/* HEADER */
+#header {
+  background: #1c1c1c;
+  max-height: 70px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  overflow-x: hidden;
+  z-index: 99999;
+}
+#header > * {
+  padding: 15px;
+  float: left;
+}
+#header .menuBtn {
+  display: block;
+  cursor: pointer;
+  padding: 17px;
+  padding-top: 16px;
+  background: #222;
+  color: #f1f1f1;
+  font-size: 30px;
+  height: 60px;
+  width: 60px;
+  -moz-transition: all 0.2s linear;
+  -webkit-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+#header .logo img {
+  max-height: 30px;
+}
+/* HEADER END */
+/* MAIN CONTENT */
+#mainContent {
+  margin-top: 60px;
+  padding: 15px;
+  color: #f1f1f1;
+  -moz-transition: all 0.2s linear;
+  -webkit-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+/* MAIN CONTENT END */
+/* OVERLAY AND LOADER */
+#overlay {
+  content: '';
+  background: rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  z-index: 99997;
+  -moz-transition: opacity 0.2s linear;
+  -webkit-transition: opacity 0.2s linear;
+  -o-transition: opacity 0.2s linear;
+  transition: opacity 0.2s linear;
+}
+#overlay.display  {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 1;
+}
+#loader {
+  background: #0f0f0f;
+  color: #f1f1f1;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  -moz-transition: all 0.2s linear;
+  -webkit-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+.ready.loaded #loader {
+  -moz-transition: all 0.4s linear;
+  -webkit-transition: all 0.4s linear;
+  -o-transition: all 0.4s linear;
+  transition: all 0.4s linear;
+  opacity: 0;
+}
+#loader .spinner {
+  width: 70px;
+  height: 70px;
+  margin: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+#loader .spinner.outer {
+  fill: #fff;
+  animation-name: rotateYcc;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+  z-index: 1;
+}
+#loader .spinner.inner {
+  fill: #ff1e53;
+  animation-name: rotateY;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  z-index: 0;
+}
+@keyframes rotateY {
+    from {transform: rotateY(0deg);}
+    to {transform: rotateY(360deg);}
+}
+@keyframes rotateYcc {
+    from {transform: rotateY(0deg);}
+    to {transform: rotateY(-360deg);}
+}
+/* OVERLAY AND LOADER END */
+/* NO CONNECTION PAGE */
+#noConnection #mainContent {
+  margin-top: 35px;
+  text-align: center;
+}
+#noConnection #mainContent img {
+  max-width: 100%;
+  max-height: 60px;
+}
+/* NO CONNECTION PAGE END */
+/* LARGER MENU */
+@media(min-width: 1000px) {
+  #menu {
+    margin-left: 0;
+  }
+  #header .menuBtn {
+    margin-left: -60px;
+  }
+  #mainContent {
+    margin-left: 300px;
+  }
+  #loader {
+    margin-left: 300px;
+  }
+}
+/* LARGER MENU END */

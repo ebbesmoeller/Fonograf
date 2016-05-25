@@ -8,7 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body id="<?php echo $thisController?>">
-    <div class="header">
-      <img src="/template/style/graphics/logoWhite.png" />
+    <?php include('template/menu.tpl') ?>
+    <div id="header">
+      <a class="menuBtn">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+      </a>
+      <div class="logo">
+        <a href="/"><img src="/template/style/graphics/logoWhite.png" /></a>
+      </div>
     </div>
-    <div class="mainContent">
+    <div id="mainContent">

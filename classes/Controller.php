@@ -7,28 +7,23 @@ class Controller {
       }
       return self::$instance;
   }
-  public static function fetchController($controllerName = 'index') {
+  public static function fetchController() {
     $render = new Render();
+
+    $contentOnly = true;
+    if (Post::getQuery('content_only'))
+      $contentOnly = false;
+
     $page = Post::getQuery('p');
     if ($page != '') {
       switch ($page) {
-        case 'connectionState':
-          if(ActiveDirectory::getInstance()->connectionState())
-            echo 'connected';
-          die();
-        break;
-        case 'logOut':
-          Authentication::unAuthenticate();
-          header("Location: /");
-          die();
-        break;
         default:
-          $render->renderPage($page);
+          $render->renderPage($page, $contentOnly);
         break;
       }
     }
     else {
-      $render->renderPage();
+      $render->renderPage('index',$contentOnly);
     }
   }
 }

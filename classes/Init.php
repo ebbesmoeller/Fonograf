@@ -13,7 +13,14 @@ class Init {
     }
     session_start();
     ini_set('session.save_path',$_SERVER['DOCUMENT_ROOT'] . "/sessions");
-    Controller::getInstance()->fetchController();
+    if (!Database::getInstance()->isConnected()) {
+      $render = new Render();
+      $render->renderPage('noConnection', false);
+    }
+    else {
+      Controller::getInstance()->fetchController();
+    }
+
     exit();
   }
 }

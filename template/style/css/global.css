@@ -1,3 +1,9 @@
+/* FONTS */
+@font-face {
+    font-family: Poppins;
+    src: url(../fonts/Poppins.ttf);
+}
+/* FONTS END */
 /* GENERAL */
 * {
   box-sizing: border-box;
@@ -5,13 +11,14 @@
 body {
   background: #0f0f0f;
   min-width: 300px;
+  font-family: Poppins, Helvetica Neue, Arial, sans-serif;
 }
 /* GENERAL END */
 /* BUTTONS */
 .btn {
   border-radius: 50px;
   border-width: 2px;
-  padding: 3px 18px;
+  padding: 5px 18px;
   outline: none !important;
   -moz-transition: all 0.2s linear;
   -webkit-transition: all 0.2s linear;
@@ -42,6 +49,35 @@ body {
   border-color: #c3143e;
 }
 /* BUTTONS END */
+/* PANELS */
+.panel {
+  border-radius: 0;
+  background: #222;
+}
+.panel.panel-default {
+  border-color: #2b2b2b;
+}
+/* PANELS END */
+/* FORM CONTROLS */
+.form-control {
+  border-radius: 50px;
+}
+.form-control:focus {
+  border: 1px solid #ccc;
+  box-shadow: 0 0 0;
+}
+/* FORM CONTROLS END */
+/* HEADINGS */
+h1 {
+  font-size: 30px;
+}
+h2 {
+  font-size: 26px;
+}
+h3 {
+  font-size: 22px;
+}
+/* HEADINGS END */
 /* MENU */
 #menu {
   position: fixed;
@@ -56,10 +92,10 @@ body {
   margin-left: -300px;
   z-index:99998;
   padding-top: 60px;
-  -moz-transition: margin-left 0.15s linear;
-  -webkit-transition: margin-left 0.15s linear;
-  -o-transition: margin-left 0.15s linear;
-  transition: margin-left 0.15s linear;
+  -moz-transition: margin-left 0.2s linear;
+  -webkit-transition: margin-left 0.2s linear;
+  -o-transition: margin-left 0.2s linear;
+  transition: margin-left 0.2s linear;
 }
 #menu.open {
   margin-left: 0;
@@ -72,8 +108,9 @@ body {
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: 20px;
-  padding: 10px 20px;
+  font-size: 18px;
+  line-height: 28px;
+  padding: 10px 20px 8px;
   border-bottom: 1px dotted #2b2b2b;
   float: left;
   width: 100%;
@@ -81,12 +118,17 @@ body {
 #menu > ul > li a {
   color: #f1f1f1;
   text-decoration: none;
+  display: block;
 }
 #menu > ul > li a i.fa {
   width: 34px;
+  -moz-transition: color 0.2s linear;
+  -webkit-transition: color 0.2s linear;
+  -o-transition: color 0.2s linear;
+  transition: color 0.2s linear;
 }
 #menu > ul > li.active a i.fa {
-  color: #ff1e53;;
+  color: #ff1e53;
 }
 /* MENU END */
 /* HEADER */
@@ -162,16 +204,13 @@ body {
   left: 0;
   right: 0;
   text-align: center;
-  -moz-transition: all 0.2s linear;
-  -webkit-transition: all 0.2s linear;
-  -o-transition: all 0.2s linear;
-  transition: all 0.2s linear;
-}
-.ready.loaded #loader {
+  z-index: 99998;
   -moz-transition: all 0.4s linear;
   -webkit-transition: all 0.4s linear;
   -o-transition: all 0.4s linear;
   transition: all 0.4s linear;
+}
+.ready.loaded #loader {
   opacity: 0;
 }
 #loader .spinner {
@@ -201,12 +240,12 @@ body {
   z-index: 0;
 }
 @keyframes rotateY {
-    from {transform: rotateY(0deg);}
-    to {transform: rotateY(360deg);}
+  from {transform: rotateY(0deg);}
+  to {transform: rotateY(360deg);}
 }
 @keyframes rotateYcc {
-    from {transform: rotateY(0deg);}
-    to {transform: rotateY(-360deg);}
+  from {transform: rotateY(0deg);}
+  to {transform: rotateY(-360deg);}
 }
 /* OVERLAY AND LOADER END */
 /* NO CONNECTION PAGE */
@@ -221,6 +260,12 @@ body {
 /* NO CONNECTION PAGE END */
 /* LARGER MENU */
 @media(min-width: 1000px) {
+  body {
+    background-image: url(../graphics/bg.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
   #menu {
     margin-left: 0;
   }
@@ -229,6 +274,9 @@ body {
   }
   #mainContent {
     margin-left: 300px;
+  }
+  #noConnection #mainContent {
+    margin-left: 0;
   }
   #loader {
     margin-left: 300px;

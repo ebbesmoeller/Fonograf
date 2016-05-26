@@ -7,3 +7,8 @@ define('_SQL_PORT_', '3306');
 define('_SQL_DB_', 'fonograf');
 define('_SQL_USER_', 'fonograf');
 define('_SQL_PASS_', 'JGqQFu2MDF4W6ZKg');
+
+define('_MUSIC_FOLDER_', '/mnt/usb/music');
+define('_MUSIC_TYPES_', json_encode([
+  'mp3',
+]));

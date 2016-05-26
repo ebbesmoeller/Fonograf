@@ -12,13 +12,14 @@ class Database {
     $dbConnection = new mysqli(_SQL_SERVER_, _SQL_USER_, _SQL_PASS_,_SQL_DB_,_SQL_PORT_);
     if (!$dbConnection->connect_errno > 0) {
       if ($query != '') {
-        $sql = $dbConnection->real_escape_string($query);
-        if($result = $dbConnection->query($sql)){
-          $resultsArr = array();
-          while($row = $result->fetch_assoc()){
-            $resultsArr[] = $row;
+        if($result = $dbConnection->query($query)){
+          if ($result->num_rows) {
+            $resultsArr = array();
+            while($row = $result->fetch_assoc()) {
+              $resultsArr[] = $row;
+            }
+            return $resultsArr;
           }
-          return $resultsArr;
         }
       }
       return true;
@@ -38,5 +39,14 @@ class Database {
   }
   public function execute($query) {
     self::query($query);
+  }
+
+  public static function cleanInput($input) {
+    $toRemove = [';'];
+    $input = str_replace($toRemove,'',$input);
+    $input = str_replace('\'','\'\'',$input);
+    $input = str_replace('"','""',$input);
+    $input = htmlentities($input);
+    return $input;
   }
 }

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/template/style/css/animate.css">
     <link rel="stylesheet" href="/template/style/css/global.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/template/style/graphics/favicon.png?1">
   </head>
   <body id="<?php echo $thisController?>">
     <?php include('template/menu.tpl') ?>
@@ -14,7 +15,7 @@
         <i class="fa fa-bars" aria-hidden="true"></i>
       </a>
       <div class="logo">
-        <a href="/"><img src="/template/style/graphics/logoWhite.png" /></a>
+        <img src="/template/style/graphics/logoWhite.png" />
       </div>
     </div>
     <div id="mainContent">

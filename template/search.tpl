@@ -1,20 +1,20 @@
-<!-- Standard button -->
-<button type="button" class="btn btn-default">Default</button>
-
-<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-<button type="button" class="btn btn-primary">Primary</button>
-
-<!-- Indicates a successful or positive action -->
-<button type="button" class="btn btn-success">Success</button>
-
-<!-- Contextual button for informational alert messages -->
-<button type="button" class="btn btn-info">Info</button>
-
-<!-- Indicates caution should be taken with this action -->
-<button type="button" class="btn btn-warning">Warning</button>
-
-<!-- Indicates a dangerous or potentially negative action -->
-<button type="button" class="btn btn-danger">Danger</button>
-
-<!-- Deemphasize a button by making it look like a link while maintaining button behavior -->
-<button type="button" class="btn btn-link">Link</button>
+<?php
+  if (Post::getQuery('q') == true && Post::getQuery('q') != '1') {
+    $query = Post::getQuery('q');
+    $tracks = Music::searchAllSongs($query);
+  }
+?>
+<div class="searchArea">
+  <form class="form-group">
+    <input type="hidden" name="p" value="search" />
+    <div class="input-group">
+      <input type="search" class="form-control" name="q" placeholder="<?php $t->t('Search by artist, album, or song')?>" value="<?php echo $query?>"/>
+      <div class="input-group-btn">
+        <button type="submit" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;<?php $t->t('Search')?></button>
+      </div>
+    </div>
+  </form>
+</div>
+<pre>
+  <?php print_r($tracks)?>
+</pre>

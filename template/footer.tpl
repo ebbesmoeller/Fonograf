@@ -2,57 +2,58 @@
     <div id="overlay"></div>
     <div id="loader">
       <style>
-        #loader {
-          background: #0f0f0f;
-          color: #f1f1f1;
-          position: fixed;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          text-align: center;
-        }
-        .ready.loaded #loader {
-          -moz-transition: all 0.4s linear;
-          -webkit-transition: all 0.4s linear;
-          -o-transition: all 0.4s linear;
-          transition: all 0.4s linear;
-          opacity: 0;
-        }
-        #loader .spinner {
-          width: 70px;
-          height: 70px;
-          margin: auto;
-          position: absolute;
-          left: 0;
-          right: 0;
-          top: 0;
-          bottom: 0;
-        }
-        #loader .spinner.outer {
-          fill: #fff;
-          animation-name: rotateYcc;
-          animation-duration: 1.5s;
-          animation-iteration-count: infinite;
-          animation-timing-function: ease-out;
-          z-index: 1;
-        }
-        #loader .spinner.inner {
-          fill: #ff1e53;
-          animation-name: rotateY;
-          animation-duration: 3s;
-          animation-iteration-count: infinite;
-          animation-timing-function: linear;
-          z-index: 0;
-        }
-        @keyframes rotateY {
-            from {transform: rotateY(0deg);}
-            to {transform: rotateY(360deg);}
-        }
-        @keyframes rotateYcc {
-            from {transform: rotateY(0deg);}
-            to {transform: rotateY(-360deg);}
-        }
+      #loader {
+        background: #0f0f0f;
+        color: #f1f1f1;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        z-index: 99998;
+        -moz-transition: all 0.4s linear;
+        -webkit-transition: all 0.4s linear;
+        -o-transition: all 0.4s linear;
+        transition: all 0.4s linear;
+      }
+      .ready.loaded #loader {
+        opacity: 0;
+      }
+      #loader .spinner {
+        width: 70px;
+        height: 70px;
+        margin: auto;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+      }
+      #loader .spinner.outer {
+        fill: #fff;
+        animation-name: rotateYcc;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-out;
+        z-index: 1;
+      }
+      #loader .spinner.inner {
+        fill: #ff1e53;
+        animation-name: rotateY;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        z-index: 0;
+      }
+      @keyframes rotateY {
+        from {transform: rotateY(0deg);}
+        to {transform: rotateY(360deg);}
+      }
+      @keyframes rotateYcc {
+        from {transform: rotateY(0deg);}
+        to {transform: rotateY(-360deg);}
+      }
       </style>
       <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" width="100.00006" height="100.00006" viewBox="0 0 100.00006 100.00006" version="1.1" class="spinner outer">
         <g transform="translate(0,0)">
@@ -69,22 +70,5 @@
     <script src="/template/style/js/jquery-2.2.3.min.js"></script>
     <script src="/template/style/bootstrap/js/bootstrap.min.js"></script>
     <script src="/template/style/js/global.js"></script>
-    <script>
-  		$(document).ready(function(){
-  			$('body').addClass('ready');
-  			setTimeout(function(){
-  				triggerLoaded();
-  			}, 2000);
-  		});
-  		$(window).bind("load", function() {
-  			triggerLoaded();
-  		});
-  		function triggerLoaded() {
-  			$('body').addClass('loaded');
-        setTimeout(function(){
-          $('#loader').hide();
-        }, 400);
-  		}
-  	</script>
   </body>
 </html>

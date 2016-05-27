@@ -1,13 +1,20 @@
 <?php
 $translations = array(
   'Fonograf' => 'Fonograf',
+  'To the top' => 'Til toppen',
   'No connection to database!' => 'Ingen forbindelse til database!',
   'Reload page' => 'Genindlæs side',
   'Home' => 'Hjem',
   'Search' => 'Søg',
   'Search by artist, album, or song' => 'Søg efter kunstner, album eller sang',
+  'Showing results for' => 'Viser resultater for',
+  'No results found' => 'Ingen resultater blev fundet',
   'Music' => 'Musik',
   'Playlist' => 'Afspilningsliste',
+  'Add to playlist' => 'Tilføj til afspilningsliste',
   'Welcome to Fonograf' => 'Velkommen til Fonograf',
-  'Get started by browsing or searching for music, through the links in the menu.' => 'Kom i gang ved at gennemse musikbiblioteket eller søge i det fra menuen.'
+  'Get started by browsing or searching for music, through the links in the menu.' => 'Kom i gang ved at gennemse musikbiblioteket eller søge i det fra menuen.',
+  'Artists' => 'Kunstnere',
+  'Songs' => 'Sange',
+  'Albums' => 'Albummer',
 );

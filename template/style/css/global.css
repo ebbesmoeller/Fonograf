@@ -13,12 +13,15 @@ body {
   min-width: 300px;
   font-family: Poppins, Helvetica Neue, Arial, sans-serif;
 }
+hr {
+  border-top: 1px solid #222;
+}
 /* GENERAL END */
 /* BUTTONS */
 .btn {
   border-radius: 50px;
   border-width: 2px;
-  padding: 5px 18px;
+  padding: 7px 18px;
   outline: none !important;
   -moz-transition: all 0.2s linear;
   -webkit-transition: all 0.2s linear;
@@ -61,6 +64,7 @@ body {
 /* FORM CONTROLS */
 .form-control {
   border-radius: 50px;
+  height: 38px;
 }
 .form-control:focus {
   border: 1px solid #ccc;
@@ -76,6 +80,9 @@ h2 {
 }
 h3 {
   font-size: 22px;
+}
+.page-header {
+    border-bottom: 1px solid #222;
 }
 /* HEADINGS END */
 /* MENU */
@@ -164,6 +171,26 @@ h3 {
 #header .logo img {
   max-height: 30px;
 }
+#toTop {
+  display: none;
+  cursor: pointer;
+  padding: 18px;
+  padding-top: 15px;
+  background: #222;
+  color: #f1f1f1;
+  font-size: 25px;
+  height: 60px;
+  width: 60px;
+  float: right;
+  opacity: 0;
+  -moz-transition: all 0.4s linear;
+  -webkit-transition: all 0.4s linear;
+  -o-transition: all 0.4s linear;
+  transition: all 0.4s linear;
+}
+#toTop.display {
+  opacity: 1;
+}
 /* HEADER END */
 /* MAIN CONTENT */
 #mainContent {
@@ -176,6 +203,48 @@ h3 {
   transition: all 0.2s linear;
 }
 /* MAIN CONTENT END */
+/* LISTS */
+.list > ul {
+  margin: 0;
+  padding: 0;
+}
+.list > ul > li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px dotted #222;
+  padding: 10px 5px;
+}
+.list > ul > li:nth-child(1) {
+  border-top: 0;
+}
+.list > ul > li a {
+  color: #f1f1f1;
+  text-decoration: none;
+}
+.list > ul > li a:hover {
+  text-decoration: underline;;
+}
+.list.tracks > ul > li:nth-child(1) {
+  border-top: 0;
+  color: #606060;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+.list.tracks > ul > li *:nth-child(1) {
+  text-align: center;
+}
+.list.tracks > ul > li a.addTrack i {
+  font-size: 20px;
+  -moz-transition: color 0.2s linear;
+  -webkit-transition: color 0.2s linear;
+  -o-transition: color 0.2s linear;
+  transition: color 0.2s linear;
+}
+.list.tracks > ul > li a.addTrack:hover {
+  color: #ff1e53;
+}
+/* LISTS END */
 /* OVERLAY AND LOADER */
 #overlay {
   content: '';

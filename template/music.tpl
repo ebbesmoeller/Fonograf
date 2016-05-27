@@ -1,3 +1,3 @@
 <pre>
-  <?php print_r(Music::getAllSongs())?>
+  <?php print_r(Music::getAllTracks())?>
 </pre>

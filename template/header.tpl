@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="/template/style/graphics/favicon.png?1">
   </head>
-  <body id="<?php echo $thisController?>">
+  <body>
     <?php include('template/menu.tpl') ?>
     <div id="header">
       <a class="menuBtn">
@@ -17,5 +17,8 @@
       <div class="logo">
         <img src="/template/style/graphics/logoWhite.png" />
       </div>
+      <a id="toTop" title="<?php $t->t('To the top')?>">
+        <i class="fa fa-chevron-up" aria-hidden="true"></i>
+      </a>
     </div>
     <div id="mainContent">

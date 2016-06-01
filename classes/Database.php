@@ -46,7 +46,12 @@ class Database {
     $input = str_replace($toRemove,'',$input);
     $input = str_replace('\'','\'\'',$input);
     $input = str_replace('"','""',$input);
+    $inputCopy = $input;
     $input = htmlentities($input);
+    if ($input == '') {
+      $input = utf8_encode($inputCopy);
+      $input = htmlentities($input);
+    }
     return $input;
   }
 }

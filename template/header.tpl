@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="/template/style/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/template/style/css/animate.css">
     <link rel="stylesheet" href="/template/style/css/global.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="/template/style/graphics/favicon.png?1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/png" href="/template/style/graphics/favicon.png">
   </head>
   <body>
     <?php include('template/menu.tpl') ?>

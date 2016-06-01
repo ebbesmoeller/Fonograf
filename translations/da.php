@@ -16,5 +16,11 @@ $translations = array(
   'Get started by browsing or searching for music, through the links in the menu.' => 'Kom i gang ved at gennemse musikbiblioteket eller søge i det fra menuen.',
   'Artists' => 'Kunstnere',
   'Songs' => 'Sange',
-  'Albums' => 'Albummer',
+  'Albums' => 'Albums',
+  'Artist' => 'Kunstner',
+  'Song' => 'Sang',
+  'Album' => 'Album',
+  'Track' => 'Nummer',
+  'Previous' => 'Forrige',
+  'Next' => 'Næste'
 );

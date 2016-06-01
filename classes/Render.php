@@ -3,14 +3,20 @@ class Render {
   public function renderPage($template = "index", $chrome = true) {
     $templateDir = "template";
     $t = new Translation;
+    $javascripts=array();
     if (is_dir($templateDir)) {
-      $thisController = $template;    
+      $thisController = $template;
       if (is_file($templateDir."/header.tpl") && $chrome) {
         include($templateDir."/header.tpl");
       }
 
       if (is_file($templateDir."/".$template.".tpl") && $template != 'header' && $template != 'footer') {
         include($templateDir."/".$template.".tpl");
+        if (!$chrome && is_file($templateDir.'/javascripts.tpl')) {
+          foreach($javascripts as $javascript){
+            echo $javascript;
+          }
+        }
       }
       else {
         echo '<p style="font-family: sans-serif;">Template Not Found!</p>';

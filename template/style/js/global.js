@@ -69,15 +69,18 @@ window.addEventListener("popstate", function(e) {
 });
 
 function reloadAsync(url) {
+  scrollToTop();
   $('#loader').show();
   $('body').removeClass('ready').removeClass('loaded');
   $.get(appendQueryString(url, {'content_only':''}), function(data) {
     $( "#mainContent" ).html( data );
-    history.pushState('data', '', url);
-    $('body').addClass('ready').addClass('loaded');
     setTimeout(function(){
-      $('#loader').hide();
-    }, 400);
+      history.pushState('data', '', url);
+      $('body').addClass('ready').addClass('loaded');
+      setTimeout(function(){
+        $('#loader').hide();
+      }, 400);
+    }, 350);
   });
 }
 
@@ -101,6 +104,12 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 // Async load of pages end
+// ASYNC ADD TO PLAYLIST
+$('#mainContent a.addTrack').click(function(e){
+  e.preventDefault();
+  $.post( $(this)[0].href, function( data ) {});
+});
+// ASYNC ADD TO PLAYLIST END
 // TO TOP BUTTON
 $(window).scroll(function() {
   if($(window).scrollTop()>(window.innerHeight/2)&&$('#toTop').is(":hidden")) {
@@ -115,6 +124,9 @@ $(window).scroll(function() {
   }
 });
 $('#toTop').on("click",function() {
-  $('html,body').animate({scrollTop:0},'fast',function(){});
+  scrollToTop();
 });
+function scrollToTop() {
+  $('html,body').animate({scrollTop:0},'medium',function(){});
+}
 // TO TOP BUTTON

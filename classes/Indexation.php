@@ -23,7 +23,7 @@ class Indexation {
         $album = Database::getInstance()->getRow('SELECT * FROM `albums` WHERE `name`=\''.$track->album.'\';');
       }
 
-      Database::getInstance()->execute('INSERT INTO `tracks`(`name`,`path`,`file`,`id_album`,`id_artist`,`track`,`genre`,`year`) VALUES(\''.$track->name.'\',\''.$track->path.'\',\''.$track->file.'\','.$album['id'].','.$artist['id'].',\''.$track->track.'\',\''.$track->genre.'\','.$track->year.');');
+      Database::getInstance()->execute('INSERT INTO `tracks`(`name`,`path`,`file`,`id_album`,`id_artist`,`track`,`genre`,`year`) VALUES(\''.$track->name.'\',\''.$track->path.'\',\''.$track->file.'\','.$album['id'].','.$artist['id'].','.$track->track.',\''.$track->genre.'\','.$track->year.');');
     }
   }
 
@@ -48,16 +48,20 @@ class Indexation {
             $track->artist = Database::cleanInput($id3['TPE2']['body']);
           else
             $track->artist = Database::cleanInput($id3['TPE1']['body']);
-          $track->track = Database::cleanInput($id3['TRCK']['body']);
+          $track->track = (int)explode('/',Database::cleanInput($id3['TRCK']['body']))[0];
           $track->genre = Database::cleanInput($id3['TCON']['body']);
           $track->year = (int)$id3['TYER']['body'];
           $track->path = Database::cleanInput($folder);
           $track->file = Database::cleanInput(str_replace($folder.'/', '', $item));
           self::$tracks[] = $track;
+
+          echo 'memory usage: '.((int)memory_get_usage()/1000000.0).' MB <br />';
+          print_r($track);
+
+          unset($track);
+          unset($id3);
         }
       }
     }
   }
-
-
 }

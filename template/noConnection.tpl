@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/template/style/css/animate.css">
     <link rel="stylesheet" href="/template/style/css/global.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="/template/style/graphics/favicon.png?1">
+    <link rel="icon" type="image/png" href="/template/style/graphics/favicon.png">
   </head>
   <body id="<?php echo $thisController?>">
     <div id="mainContent">

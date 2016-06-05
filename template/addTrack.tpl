@@ -1,23 +1,47 @@
 <?php
   $track = Music::getTrack((int)Post::getQuery('id'));
-  print_r($track);
 
-  //extract data from the post
-  //set POST variables
   $url = _PLAYER_SERVER_.':'._PLAYER_PORT_;
-  $post = $track->path.'/'.$track->file;
+  $post = json_encode(
+    array(
+      'command' => 'playlistAdd',
+      'parameter' => $track->path.'/'.$track->file,
+      'secret' => _PLAYER_SECRET_
+    )
+  );
 
-  //open connection
   $ch = curl_init();
-
-  //set the url, number of POST vars, POST data
   curl_setopt($ch,CURLOPT_URL, $url);
   curl_setopt($ch,CURLOPT_POST, strlen($post));
   curl_setopt($ch,CURLOPT_POSTFIELDS, $post);
-
-  //execute post
-  $result = curl_exec($ch);
-
-  //close connection
+  curl_exec($ch);
+  $information = curl_getinfo($ch);
   curl_close($ch);
+
+  $responseCode = (int)$information['http_code'];
+  if ($responseCode == 200) {
+    header("HTTP/1.1 200 OK");
+  }
+  else if ($responseCode == 401) {
+    header("HTTP/1.1 401 Unauthorized Access");
+  }
+  else {
+    header("HTTP/1.1 404 Not Found");
+  }
+
+  $thisPage = $_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI];
+  $refererPage =  str_replace('http://', '', str_replace('https://', '', $_SERVER['HTTP_REFERER']));
+
+  if ($thisPage != $refererPage) {
+    $javascripts[] = '
+      <script type="text/javascript">
+        setTimeout(function(){
+          window.location = "'.$_SERVER['HTTP_REFERER'].'";
+        }, 100);
+      </script>
+    ';
+  }
+  else {
+    header('Location: /');
+  }
 ?>

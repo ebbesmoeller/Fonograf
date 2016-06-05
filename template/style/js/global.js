@@ -43,14 +43,14 @@ function hideMenu() {
 }
 // Menu controller end
 // Async load of pages
-$('#menu a.async').click(function(e){
+$(document).on('click', '#menu a.async', function(e) {
   e.preventDefault();
   $('#menu li.active').removeClass('active');
   $(this).parent().addClass('active');
   reloadAsync($(this)[0].href);
 });
 
-$('#mainContent a.async').click(function(e){
+$(document).on('click', '#mainContent a.async', function(e) {
   e.preventDefault();
   $('#menu li.active').removeClass('active');
   reloadAsync($(this)[0].href);
@@ -105,9 +105,19 @@ function getParameterByName(name, url) {
 }
 // Async load of pages end
 // ASYNC ADD TO PLAYLIST
-$('#mainContent a.addTrack').click(function(e){
+$(document).on('click', 'a.addTrack', function(e) {
   e.preventDefault();
-  $.post( $(this)[0].href, function( data ) {});
+  var link = $(this);
+  if (!link.hasClass('pressed')) {
+    $.post(link[0].href, function() {
+      link.removeClass('error');
+      link.addClass('pressed');
+    })
+    .fail(function() {
+      link.removeClass('pressed');
+      link.addClass('error');
+    });
+  }
 });
 // ASYNC ADD TO PLAYLIST END
 // TO TOP BUTTON

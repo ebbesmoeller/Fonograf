@@ -4,32 +4,12 @@
   $tracks = Music::getAllTracks();
 ?>
 <ul class="nav nav-tabs" role="tablist">
-  <li role="presentation"><a href="#artists" aria-controls="artists" role="tab" data-toggle="tab"><?php $t->t('Artists')?></a></li>
   <li role="presentation" class="active"><a href="#albums" aria-controls="albums" role="tab" data-toggle="tab"><?php $t->t('Albums')?></a></li>
+  <li role="presentation"><a href="#artists" aria-controls="artists" role="tab" data-toggle="tab"><?php $t->t('Artists')?></a></li>
   <li role="presentation"><a href="#songs" aria-controls="songs" role="tab" data-toggle="tab"><?php $t->t('Songs')?></a></li>
 </ul>
 <br />
 <div class="tab-content">
-  <div role="tabpanel" class="tab-pane fade" id="artists">
-    <?php if (count($artists)>0) {?>
-      <div class="list artists">
-        <ul id="artistList">
-          <?php foreach($artists as $artist) {?>
-            <li>
-              <a href="/?p=artist&id=<?php echo $artist->id?>" class="async"><?php echo $artist->name?></a>
-            </li>
-          <?php }?>
-        </ul>
-      </div>
-      <nav>
-        <ul class="pager" id="artistList-pagination" style="display: none;">
-          <li class="previous"><a id="artistList-previous" class="btn btn-default disabled" onclick="scrollToTop();"><i class="fa fa-chevron-left" aria-hidden="true" style="font-size: 13px;"></i>&nbsp;<?php $t->t('Previous')?></a></li>
-          <li class="next"><a id="artistList-next" class="btn btn-default" onclick="scrollToTop();"><?php $t->t('Next')?>&nbsp;<i class="fa fa-chevron-right" aria-hidden="true" style="font-size: 13px;"></i></a></li>
-        </ul>
-      </nav>
-    <?php }?>
-  </div>
-
   <div role="tabpanel" class="tab-pane fade in active" id="albums">
     <?php if (count($albums)>0) {?>
       <div class="grid albums">
@@ -55,6 +35,26 @@
         <ul class="pager" id="albumList-pagination" style="display: none;">
           <li class="previous"><a id="albumList-previous" class="btn btn-default disabled" onclick="scrollToTop();"><i class="fa fa-chevron-left" aria-hidden="true" style="font-size: 13px;"></i>&nbsp;<?php $t->t('Previous')?></a></li>
           <li class="next"><a id="albumList-next" class="btn btn-default" onclick="scrollToTop();"><?php $t->t('Next')?>&nbsp;<i class="fa fa-chevron-right" aria-hidden="true" style="font-size: 13px;"></i></a></li>
+        </ul>
+      </nav>
+    <?php }?>
+  </div>
+
+  <div role="tabpanel" class="tab-pane fade" id="artists">
+    <?php if (count($artists)>0) {?>
+      <div class="list artists">
+        <ul id="artistList">
+          <?php foreach($artists as $artist) {?>
+            <li>
+              <a href="/?p=artist&id=<?php echo $artist->id?>" class="async"><?php echo $artist->name?></a>
+            </li>
+          <?php }?>
+        </ul>
+      </div>
+      <nav>
+        <ul class="pager" id="artistList-pagination" style="display: none;">
+          <li class="previous"><a id="artistList-previous" class="btn btn-default disabled" onclick="scrollToTop();"><i class="fa fa-chevron-left" aria-hidden="true" style="font-size: 13px;"></i>&nbsp;<?php $t->t('Previous')?></a></li>
+          <li class="next"><a id="artistList-next" class="btn btn-default" onclick="scrollToTop();"><?php $t->t('Next')?>&nbsp;<i class="fa fa-chevron-right" aria-hidden="true" style="font-size: 13px;"></i></a></li>
         </ul>
       </nav>
     <?php }?>

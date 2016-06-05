@@ -367,6 +367,18 @@ h3 {
   -o-transition: color 0.2s linear;
   transition: color 0.2s linear;
 }
+.list.tracks > ul > li a.addTrack {
+  position: absolute;
+  overflow: inherit;
+}
+.list.tracks > ul > li a.addTrack.pressed i.fa.fa-plus-circle::before {
+  content: '\f058';
+  color: #9aff6d !important;
+}
+.list.tracks > ul > li a.addTrack.error i.fa.fa-plus-circle::before {
+  content: '\f057';
+  color: #ff0000 !important;
+}
 #mainContent .list.tracks > ul > li a.addTrack:hover {
   color: #ff1e53;
 }
@@ -380,9 +392,11 @@ h3 {
   .list.tracks > ul > li > *:nth-child(1) {
     position: absolute;
     text-align: left;
+    overflow: inherit;
+    margin-top: 19px;
   }
   .list.tracks > ul > li a.addTrack i {
-    margin-top: 18px;
+    /*margin-top: 18px;*/
     position: relative;
   }
   .list.tracks > ul > li > *:nth-child(n+2) {

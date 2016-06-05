@@ -12,7 +12,10 @@ class Render {
 
       if (is_file($templateDir."/".$template.".tpl") && $template != 'header' && $template != 'footer') {
         include($templateDir."/".$template.".tpl");
-        if (!$chrome && is_file($templateDir.'/javascripts.tpl')) {
+        if (!$chrome) {
+          // if (is_file($templateDir.'/javascripts.tpl')) {
+          //   include($templateDir.'/javascripts.tpl');
+          // }
           foreach($javascripts as $javascript){
             echo $javascript;
           }

@@ -109,11 +109,14 @@ $(document).on('click', 'a.addTrack', function(e) {
   e.preventDefault();
   var link = $(this);
   if (!link.hasClass('pressed')) {
+    link.addClass('getting');
     $.post(link[0].href, function() {
+      link.removeClass('getting');
       link.removeClass('error');
       link.addClass('pressed');
     })
     .fail(function() {
+      link.removeClass('getting');
       link.removeClass('pressed');
       link.addClass('error');
     });

@@ -72,7 +72,7 @@ fieldset[disabled] .btn {
 /* PANELS */
 .panel {
   border-radius: 0;
-  background: #222;
+  background: rgba(34, 34, 34, 0.6);
 }
 .panel.panel-default {
   border-color: #2b2b2b;
@@ -275,6 +275,7 @@ h3 {
 #mainContent a {
   color: #f1f1f1;
   text-decoration: none;
+  outline: 0;
 }
 #mainContent a:hover {
   text-decoration: underline;
@@ -352,9 +353,7 @@ h3 {
   text-transform: uppercase;
   font-size: 12px;
 }
-.list.tracks > ul > li:nth-child(1) > *:nth-child(1) {
-  margin-left: 20px;
-}
+.list.tracks > ul > li:nth-child(1) > *:nth-child(1),
 .list.tracks > ul > li:nth-child(n+2) > *:nth-child(2) {
   margin-left: 20px;
 }
@@ -371,16 +370,29 @@ h3 {
   position: absolute;
   overflow: inherit;
 }
+.list.tracks > ul > li a.addTrack.getting i.fa.fa-plus-circle {
+  animation-name: rotateYcc;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+}
 .list.tracks > ul > li a.addTrack.pressed i.fa.fa-plus-circle::before {
   content: '\f058';
-  color: #9aff6d !important;
+  color: #00ff16 !important;
 }
 .list.tracks > ul > li a.addTrack.error i.fa.fa-plus-circle::before {
   content: '\f057';
-  color: #ff0000 !important;
+  color: #ff002a !important;
 }
 #mainContent .list.tracks > ul > li a.addTrack:hover {
   color: #ff1e53;
+}
+#mainContent .list.tracks > ul > li.playing > *:nth-child(2) {
+  color: #ff1e53;
+}
+.list.tracks.noAdd > ul > li:nth-child(1) > *:nth-child(1),
+.list.tracks.noAdd > ul > li:nth-child(n+2) > *:nth-child(2) {
+  margin-left: 0;
 }
 @media (max-width: 767px) {
   .list.tracks > ul > li:nth-child(1) {
@@ -425,6 +437,9 @@ h3 {
   }
   .list.tracks > ul > li > *:nth-child(n+3)::before {
     margin-top: 2px;
+  }
+  .list.tracks.noAdd > ul > li > *:nth-child(n+2) {
+    margin-left: 0;
   }
 }
 /* LISTS END */

@@ -1,44 +1,55 @@
 <?php
 class Music {
-  private static function queryForSongs($query) {
+  private static function buildTrack($rawData) {
+    $objectTrack = new Track();
+    $objectTrack->id = (int)$rawData['id'];
+    $objectTrack->name = $rawData['name'];
+    $objectTrack->path = html_entity_decode($rawData['path']);
+    $objectTrack->file = html_entity_decode($rawData['file']);
+    $objectTrack->album = $rawData['album'];
+    $objectTrack->artist = $rawData['artist'];
+    $objectTrack->idAlbum = $rawData['id_album'];
+    $objectTrack->idArtist = $rawData['id_artist'];
+    $objectTrack->track = $rawData['track'];
+    $objectTrack->genre = $rawData['genre'];
+    $objectTrack->year = (int)$rawData['year'];
+    return $objectTrack;
+  }
+  private static function queryForTracks($query) {
     $tracks = Database::getInstance()->executeS($query);
     $objectTracks = array();
     foreach ($tracks as $track) {
-      $objectTrack = new Track();
-      $objectTrack->id = (int)$track['id'];
-      $objectTrack->name = $track['name'];
-      $objectTrack->path = html_entity_decode($track['path']);
-      $objectTrack->file = html_entity_decode($track['file']);
-      $objectTrack->album = $track['album'];
-      $objectTrack->artist = $track['artist'];
-      $objectTrack->idAlbum = $track['id_album'];
-      $objectTrack->idArtist = $track['id_artist'];
-      $objectTrack->track = $track['track'];
-      $objectTrack->genre = $track['genre'];
-      $objectTrack->year = (int)$track['year'];
-      $objectTracks[] = $objectTrack;
+      $objectTracks[] = self::buildTrack($track);
     }
     return $objectTracks;
+  }
+
+  private static function buildArtist($rawData) {
+    $objectArtist = new Artist();
+    $objectArtist->name = $rawData['name'];
+    $objectArtist->id = $rawData['id'];
+    return $objectArtist;
   }
   private static function queryForArtists($query) {
     $artists = Database::getInstance()->executeS($query);
     $objectArtists = array();
     foreach ($artists as $artist) {
-      $objectArtist = new Artist();
-      $objectArtist->name = $artist['name'];
-      $objectArtist->id = $artist['id'];
-      $objectArtists[] = $objectArtist;
+      $objectArtists[] = self::buildArtist($artist);
     }
     return $objectArtists;
+  }
+
+  private static function buildAlbum($rawData) {
+    $objectAlbum = new Album();
+    $objectAlbum->name = $rawData['name'];
+    $objectAlbum->id = $rawData['id'];
+    return $objectAlbum;
   }
   private static function queryForAlbums($query) {
     $albums = Database::getInstance()->executeS($query);
     $objectAlbums = array();
     foreach ($albums as $album) {
-      $objectAlbum = new Album();
-      $objectAlbum->name = $album['name'];
-      $objectAlbum->id = $album['id'];
-      $objectAlbums[] = $objectAlbum;
+      $objectAlbums[] = self::buildAlbum($album);
     }
     return $objectAlbums;
   }
@@ -46,42 +57,37 @@ class Music {
 // TRACK FUNCTIONS
   public static function getAllTracks() {
     $query = 'SELECT tr.`id`, tr.`name`, tr.`path`, tr.`file`, al.`name` AS \'album\', at.`name` AS \'artist\', tr.`id_album`, tr.`id_artist`, tr.`track`, tr.`genre`, tr.`year` FROM `tracks` AS tr JOIN `artists` AS at ON tr.`id_artist` = at.`id` JOIN `albums` AS al ON tr.`id_album` = al.`id` ORDER BY tr.`name`;';
-    return self::queryForSongs($query);
+    return self::queryForTracks($query);
   }
   public static function searchTracks($searchTerm) {
     $searchTerm = Database::cleanInput($searchTerm);
     $query = 'SELECT tr.`id`, tr.`name`, tr.`path`, tr.`file`, al.`name` AS \'album\', at.`name` AS \'artist\', tr.`id_album`, tr.`id_artist`, tr.`track`, tr.`genre`, tr.`year` FROM `tracks` AS tr JOIN `artists` AS at ON tr.`id_artist` = at.`id` JOIN `albums` AS al ON tr.`id_album` = al.`id` WHERE tr.`name` LIKE \'%'.$searchTerm.'%\' ORDER BY tr.`name`;';
-    return self::queryForSongs($query);
+    return self::queryForTracks($query);
   }
   public static function getArtistTracks($idArtist) {
     $idArtist = (int)Database::cleanInput($idArtist);
     $query = 'SELECT tr.`id`, tr.`name`, tr.`path`, tr.`file`, al.`name` AS \'album\', at.`name` AS \'artist\', tr.`id_album`, tr.`id_artist`, tr.`track`, tr.`genre`, tr.`year` FROM `tracks` AS tr JOIN `artists` AS at ON tr.`id_artist` = at.`id` JOIN `albums` AS al ON tr.`id_album` = al.`id` WHERE tr.`id_artist`='.$idArtist.' ORDER BY tr.`name`;';
-    $results = self::queryForSongs($query);
+    $results = self::queryForTracks($query);
     return $results;
   }
   public static function getAlbumTracks($idAlbum) {
     $idAlbum = (int)Database::cleanInput($idAlbum);
     $query = 'SELECT tr.`id`, tr.`name`, tr.`path`, tr.`file`, al.`name` AS \'album\', at.`name` AS \'artist\', tr.`id_album`, tr.`id_artist`, tr.`track`, tr.`genre`, tr.`year` FROM `tracks` AS tr JOIN `artists` AS at ON tr.`id_artist` = at.`id` JOIN `albums` AS al ON tr.`id_album` = al.`id` WHERE tr.`id_album`='.$idAlbum.' ORDER BY tr.`track`*1;';
-    $results = self::queryForSongs($query);
+    $results = self::queryForTracks($query);
     return $results;
   }
   public static function getTrack($idTrack) {
     $idTrack = (int)Database::cleanInput($idTrack);
     $query = 'SELECT tr.`id`, tr.`name`, tr.`path`, tr.`file`, al.`name` AS \'album\', at.`name` AS \'artist\', tr.`id_album`, tr.`id_artist`, tr.`track`, tr.`genre`, tr.`year` FROM `tracks` AS tr JOIN `artists` AS at ON tr.`id_artist` = at.`id` JOIN `albums` AS al ON tr.`id_album` = al.`id` WHERE tr.`id`='.$idTrack.' LIMIT 1;';
     $result = Database::getInstance()->getRow($query);
-    $track = new Track();
-    $track->id = (int)$result['id'];
-    $track->name = $result['name'];
-    $track->path = html_entity_decode($result['path']);
-    $track->file = html_entity_decode($result['file']);
-    $track->album = $result['album'];
-    $track->artist = $result['artist'];
-    $track->idAlbum = $result['id_album'];
-    $track->idArtist = $result['id_artist'];
-    $track->track = $result['track'];
-    $track->genre = $result['genre'];
-    $track->year = (int)$result['year'];
-    return $track;
+    return self::buildTrack($result);
+  }
+  public static function getTrackByFile($trackUri) {
+    $file = Database::cleanInput(basename($trackUri));
+    $path = Database::cleanInput(str_replace('/'.basename($trackUri),'',$trackUri));
+    $query = 'SELECT tr.`id`, tr.`name`, tr.`path`, tr.`file`, al.`name` AS \'album\', at.`name` AS \'artist\', tr.`id_album`, tr.`id_artist`, tr.`track`, tr.`genre`, tr.`year` FROM `tracks` AS tr JOIN `artists` AS at ON tr.`id_artist` = at.`id` JOIN `albums` AS al ON tr.`id_album` = al.`id` WHERE tr.`path`=\''.$path.'\' AND tr.`file`=\''.$file.'\' LIMIT 1;';
+    $result = Database::getInstance()->getRow($query);
+    return self::buildTrack($result);
   }
 
 // ARTIST FUNCTIONS
@@ -105,10 +111,7 @@ class Music {
     $idArtist = (int)Database::cleanInput($idArtist);
     $query = 'SELECT `id`, `name` FROM `artists` WHERE `id`='.$idArtist.';';
     $result = Database::getRow($query);
-    $artist = new Artist();
-    $artist->id = $result['id'];
-    $artist->name = $result['name'];
-    return $artist;
+    return self::buildArtist($result);
   }
 
 // ALBUM FUNCTIONS
@@ -132,10 +135,7 @@ class Music {
     $idAlbum = (int)Database::cleanInput($idAlbum);
     $query = 'SELECT `id`, `name` FROM `albums` WHERE `id`='.$idAlbum.';';
     $result = Database::getRow($query);
-    $album = new Album();
-    $album->id = $result['id'];
-    $album->name = $result['name'];
-    return $album;
+    return self::buildAlbum($result);
   }
   public static function getAlbumArt($idAlbum) {
     $idAlbum = (int)Database::cleanInput($idAlbum);

@@ -1,0 +1,107 @@
+#!/usr/bin/env python
+import os, subprocess, pipes, json, select, time
+from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+
+# SETTINGS
+serverPort = 40000
+secret = 'dbacb7e96b1d1d1d8542b389e836e7ccee3a66b0'
+tempDir = '/tmp/musicPlayer'
+playlistFile = '/tmp/musicPlayer/playlist'
+
+# MPLAYER CLASS
+class MPlayer(object):
+    exe_name = 'mplayer' if os.sep == '/' else 'mplayer.exe'
+    def __init__(self):
+        self._mplayer = subprocess.Popen(
+                [self.exe_name, '-slave', '-quiet', '-idle'],
+                stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=1)
+        self._readlines()
+    def _readlines(self):
+        ret = []
+        while any(select.select([self._mplayer.stdout.fileno()], [], [], 0.6)):
+            ret.append( self._mplayer.stdout.readline() )
+        return ret
+    def command(self, name, *args):
+        cmd = '%s%s%s\n'%(name,
+                ' ' if args else '',
+                ' '.join(repr(a) for a in args)
+                )
+        self._mplayer.stdin.write(cmd)
+        if name == 'quit':
+            return
+        return self._readlines()
+
+#SETUP
+if not os.path.isdir(tempDir):
+    os.system('mkdir '+tempDir)
+    os.system('touch '+playlistFile)
+os.system('cat /dev/null > '+playlistFile)
+print('Starting mPlayer')
+mPlayer = MPlayer()
+time.sleep(4)
+print mPlayer.command('')
+
+# TOOLS
+def cleanFilePath(path):
+    path = path.replace("'", "'\\''")
+    path = path.replace('"', '"\\""')
+    return path
+
+# PLAYER FUNCTIONS
+def playing():
+    # mplayerInput('chapter')
+    # print mplayerOutput()
+    return
+
+def playFile(file):
+    file = cleanFilePath(file)
+    print('Playing: '+file)
+    mPlayer.command('loadfile "'+file+'" 0')
+    return
+
+def addToPlaylist(file):
+    file = cleanFilePath(file)
+    print('Adding: '+file)
+    os.system('echo "'+file+'" >> '+playlistFile)
+    mPlayer.command('loadfile "'+file+'" 1')
+    # print mPlayer.command('get_property metadata')
+    return
+
+# SERVER
+def handleRequest(request):
+    if request['command'] == 'playFile':
+        playFile(request['parameter'])
+    elif request['command'] == 'playlistAdd':
+        addToPlaylist(request['parameter'])
+    elif request['command'] == 'playing':
+        playing()
+    return
+
+class S(BaseHTTPRequestHandler):
+    def do_POST(self):
+        length = int(self.headers['Content-Length'])
+        request = self.rfile.read(length).decode('utf-8')
+        request = json.loads(request)
+        if request['secret'] == secret:
+            handleRequest(request)
+            self.send_response(200)
+        else :
+            self.send_response(401)
+
+        self.send_header("Content-type", "text/html")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+
+def run(server_class=HTTPServer, handler_class=S, port=serverPort):
+    server_address = ('', port)
+    httpd = server_class(server_address, handler_class)
+    print('Starting server')
+    httpd.serve_forever()
+
+# MAIN LOOP
+if __name__ == "__main__":
+    from sys import argv
+    if len(argv) == 2:
+        run(port=int(argv[1]))
+    else:
+        run()

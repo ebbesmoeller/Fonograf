@@ -4,8 +4,9 @@ foreach (glob("../classes/*.php") as $filename)
 {
   require_once($filename);
 }
-$albumArt = Music::getAlbumArt(Post::getQuery('id'));
-if (count($albumArt)>0) {
+$albumId = Post::getQuery('id');
+$albumArt = Music::getAlbumArt($albumId);
+if (count($albumArt)>0 && $albumId !== true) {
   $albumArt = $albumArt[0];
 }
 else {

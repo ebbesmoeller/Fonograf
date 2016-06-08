@@ -16,3 +16,5 @@ define('_MUSIC_FOLDER_', '/mnt/usb/music');
 define('_MUSIC_TYPES_', json_encode([
   'mp3',
 ]));
+
+define('_LASTFM_KEY_', 'c5ec300f47e2d976259f7a15b99a96ca');

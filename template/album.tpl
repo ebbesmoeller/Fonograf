@@ -4,7 +4,7 @@
 ?>
 <div class="row album">
   <div class="albumArt col-xs-12 col-sm-4 col-md-4 col-lg-3">
-    <img src="/download/albumArt.php?id=<?php echo $thisAlbum->id?>" title="<?php echo $thisAlbum->name?>" />
+    <img src="/download/albumArt.php?id=<?php echo $thisAlbum->id?>&name=<?php echo urlencode($album->name)?>" title="<?php echo $thisAlbum->name?>" />
   </div>
   <div class="albumInfo col-xs-12 col-sm-8 col-md-8 col-lg-9">
     <h1><?php echo $thisAlbum->name?></h1>

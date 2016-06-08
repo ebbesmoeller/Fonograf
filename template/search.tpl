@@ -50,7 +50,7 @@
                 <ul>
                   <?php foreach($albums as $album) {?>
                     <li>
-                      <a href="/?p=album&id=<?php echo $album->id?>" class="async"><img class="albumArt" src="/download/albumArt.php?id=<?php echo $album->id?>" title="<?php echo $album->name?>" /></a>
+                      <a href="/?p=album&id=<?php echo $album->id?>" class="async"><img class="albumArt" src="/download/albumArt.php?id=<?php echo $album->id?>&name=<?php echo urlencode($album->name)?>" title="<?php echo $album->name?>" /></a>
                       <a href="/?p=album&id=<?php echo $album->id?>" class="async"><?php echo $album->name?></a>
                       <?php foreach(Music::getAlbumArtists($album->id) as $artist) {?>
                         <span class="albumArtist">&nbsp;-&nbsp;<a href="/?p=artist&id=<?php echo $artist->id?>" class="async"><?php echo $artist->name?></a></span>

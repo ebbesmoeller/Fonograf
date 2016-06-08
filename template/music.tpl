@@ -18,7 +18,7 @@
             <li class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
               <a href="/?p=album&id=<?php echo $album->id?>" class="albumArt async">
                 <div class="albumArtContainer">
-                  <img class="albumArtImg lazy" src="/download/noAlbumArt.jpg" title="<?php echo $album->name?>" data-original="/download/albumArt.php?id=<?php echo $album->id?>"/>
+                  <img class="albumArtImg lazy" src="/download/noAlbumArt.jpg" title="<?php echo $album->name?>" data-original="/download/albumArt.php?id=<?php echo $album->id?>&name=<?php echo urlencode($album->name)?>"/>
                 </div>
               </a>
               <div class="albumInfo">

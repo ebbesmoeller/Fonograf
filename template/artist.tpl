@@ -7,13 +7,13 @@
 <div class="artist">
   <h1><?php echo $thisArtist->name?></h1>
   <?php if (count($albums)>0) {?>
-    <div class="grid albums">
+    <div class="grid albums lazy">
       <ul class="row row-flex row-flex-wrap">
         <?php foreach($albums as $album) {?>
           <li class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
             <a href="/?p=album&id=<?php echo $album->id?>" class="albumArt async">
               <div class="albumArtContainer">
-                <img class="albumArtImg" src="/download/albumArt.php?id=<?php echo $album->id?>" title="<?php echo $album->name?>"/>
+                <img class="albumArtImg lazy" src="/download/noAlbumArt.jpg" title="<?php echo $album->name?>" data-original="/download/albumArt.php?id=<?php echo $album->id?>"/>
               </div>
             </a>
             <div class="albumInfo">
@@ -52,3 +52,16 @@
     </ul>
   </div>
 <?php }?>
+<?php
+  $javascripts[] = "
+  <script type='text/javascript'>
+    $('body').on('loaded', function() {
+      $('.grid.albums.lazy img.lazy').lazyload({
+        load : function()
+        {
+          $(this).closest('.albumArt').addClass('loaded')
+        }
+      });
+    });
+  </script>";
+?>

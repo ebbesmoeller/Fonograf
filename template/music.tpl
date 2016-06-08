@@ -12,13 +12,13 @@
 <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="albums">
     <?php if (count($albums)>0) {?>
-      <div class="grid albums">
+      <div class="grid albums lazy">
         <ul class="row row-flex row-flex-wrap" id="albumList">
           <?php foreach($albums as $album) {?>
             <li class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
               <a href="/?p=album&id=<?php echo $album->id?>" class="albumArt async">
                 <div class="albumArtContainer">
-                  <img class="albumArtImg" src="/download/albumArt.php?id=<?php echo $album->id?>" title="<?php echo $album->name?>"/>
+                  <img class="albumArtImg lazy" src="/download/noAlbumArt.jpg" title="<?php echo $album->name?>" data-original="/download/albumArt.php?id=<?php echo $album->id?>"/>
                 </div>
               </a>
               <div class="albumInfo">
@@ -110,6 +110,14 @@
   $javascripts[] = "<script src=\"/template/style/js/jquery.paginate.min.js\"></script>";
   $javascripts[] = "
   <script type='text/javascript'>
+    $('body').on('loaded', function() {
+      $('.grid.albums.lazy img.lazy').lazyload({
+        load : function()
+        {
+          $(this).closest('.albumArt').addClass('loaded')
+        }
+      });
+    });
     $(document).ready(function() {
       $('#artistList').paginate({itemsPerPage: 15});
     });

@@ -1,4 +1,4 @@
-// Loader and state
+// LOADER AND STATE
 $(document).ready(function(){
   $('body').addClass('ready');
   setTimeout(function(){
@@ -12,12 +12,13 @@ $(window).bind("load", function() {
 
 function triggerLoaded() {
   $('body').addClass('loaded');
+  $('body').trigger('loaded');
   setTimeout(function(){
     $('#loader').hide();
   }, 400);
 }
-// Loader and state end
-// Menu controller
+// LOADER AND STATE END
+// MENU CONTROLLER
 $('.menuBtn').click(function(){
   $('#menu').toggleClass('open');
   if ($('#menu').hasClass('open')) {
@@ -41,8 +42,8 @@ function hideMenu() {
     $('#overlay').removeClass('display');
   }
 }
-// Menu controller end
-// Async load of pages
+// MENU CONTROLLER END
+// ASYNC LOAD OF PAGES
 $(document).on('click', '#menu a.async', function(e) {
   e.preventDefault();
   $('#menu li.active').removeClass('active');
@@ -74,13 +75,12 @@ function reloadAsync(url) {
   $('body').removeClass('ready').removeClass('loaded');
   $.get(appendQueryString(url, {'content_only':''}), function(data) {
     $( "#mainContent" ).html( data );
+    history.pushState('data', '', url);
+    $('body').addClass('ready').addClass('loaded');
+    $('body').trigger('loaded');
     setTimeout(function(){
-      history.pushState('data', '', url);
-      $('body').addClass('ready').addClass('loaded');
-      setTimeout(function(){
-        $('#loader').hide();
-      }, 400);
-    }, 350);
+      $('#loader').hide();
+    }, 400);
   });
 }
 
@@ -103,7 +103,7 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
-// Async load of pages end
+// ASYNC LOAD OF PAGES END
 // ASYNC ADD TO PLAYLIST
 $(document).on('click', 'a.addTrack', function(e) {
   e.preventDefault();

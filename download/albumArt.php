@@ -10,7 +10,7 @@ if (count($albumArt)>0 && $albumId !== true) {
   $albumArt = $albumArt[0];
 }
 else {
-  $albumArt = 'noAlbumArt.png';
+  $albumArt = 'noAlbumArt.jpg';
 }
 $ext = pathinfo($albumArt, PATHINFO_EXTENSION);
 

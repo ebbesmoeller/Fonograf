@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="/template/style/graphics/favicon.png">
   </head>
   <body>
-    <?php include('template/menu.tpl') ?>
+    <?php include('template/menu.cl') ?>
     <div id="header">
       <a class="menuBtn">
         <i class="fa fa-bars" aria-hidden="true"></i>

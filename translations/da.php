@@ -3,6 +3,7 @@ $translations = array(
   'Fonograf' => 'Fonograf',
   'To the top' => 'Til toppen',
   'No connection to database!' => 'Ingen forbindelse til database!',
+  'No connection to music player!' => 'Ingen forbindelse til musik afspiller!',
   'Reload page' => 'Genindlæs side',
   'Home' => 'Hjem',
   'Search' => 'Søg',

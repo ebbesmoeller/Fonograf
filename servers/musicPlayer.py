@@ -28,7 +28,7 @@ class MPlayer(object):
         self._readlines()
     def _readlines(self):
         ret = []
-        while any(select.select([self._mplayer.stdout.fileno()], [], [], 0.6)):
+        while any(select.select([self._mplayer.stdout.fileno()], [], [], 0.1)):
             ret.append( self._mplayer.stdout.readline() )
         return ret
     def command(self, name, *args):
@@ -40,12 +40,20 @@ class MPlayer(object):
         if name == 'quit':
             return
         return self._readlines()
+    def commandNoReturn(self, name, *args):
+        cmd = '%s%s%s\n'%(name,
+                ' ' if args else '',
+                ' '.join(repr(a) for a in args)
+                )
+        self._mplayer.stdin.write(cmd)
+        return
 class musicPlayer (threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.kill = False
         self.mPlayer = MPlayer()
         self.currentlyPlaying = ''
+        self.playlistCount = 0
         self.currentIndex = 0
         self.loopingPlayback = False
         self.volume = 100
@@ -58,46 +66,67 @@ class musicPlayer (threading.Thread):
         while not self.kill:
             self.playlister()
     def playlister(self):
-        if not self.mPlayer.command('get_file_name'):
-            self.currentlyPlaying = ''
-            lines = [line.rstrip('\n') for line in open(playlistFile)]
-            if lines:
-                if 0 <= self.currentIndex < len(lines):
-                    file = lines[self.currentIndex]
-                    print('Playing: '+file)
-                    self.currentlyPlaying = file
-                    self.mPlayer.command('loadfile "'+cleanFilePath(file)+'"')
-                    self.currentIndex = self.currentIndex+1
-                else:
-                    if self.loopingPlayback:
-                        self.currentIndex = 0
-                    self.currentlyPlaying = ''
+        noCount = 0
+        while noCount < 5:
+            if not self.mPlayer.command('get_percent_pos'):
+                noCount = noCount + 1
+
+        noCount = 0
+        self.currentlyPlaying = ''
+        lines = [line.rstrip('\n') for line in open(playlistFile)]
+        if lines:
+            if 0 <= self.currentIndex < len(lines):
+                file = lines[self.currentIndex]
+                print('Playing: '+file)
+                self.currentlyPlaying = file
+                self.mPlayer.commandNoReturn('loadfile "'+cleanFilePath(file)+'"')
+                self.currentIndex = self.currentIndex+1
+            else:
+                if self.loopingPlayback:
+                    self.currentIndex = 0
+                self.currentlyPlaying = ''
         time.sleep(0.1)
 
     def setPause(self):
+        self.mPlayer.commandNoReturn('pause')
         if self.pause:
+            print 'Unpaused'
             self.pause = False
         elif not self.pause:
+            print 'Paused'
             self.pause = True
-        self.mPlayer.command('pause')
     def setMute(self):
+        self.mPlayer.commandNoReturn('mute')
         if self.mute:
+            print 'Unmuted'
             self.mute = False
         elif not self.mute:
+            print 'Muted'
             self.mute = True
-        self.mPlayer.command('mute')
+    def skipToIndex(self, index):
+        self.mPlayer.commandNoReturn('stop')
+        self.currentIndex = int(index)
+    def setPrevTrack(self):
+        if self.currentlyPlaying != '':
+            newIndex = self.currentIndex-2
+            if newIndex >= 0:
+                self.skipToIndex(newIndex)
+    def setNextTrack(self):
+        if self.currentlyPlaying != '':
+            if self.currentIndex <= self.playlistCount-1:
+                self.skipToIndex(self.currentIndex)
     def setVolume(self, percentage):
         self.volume = int(percentage)
-        self.mPlayer.command('set volume '+str(percentage))
+        self.mPlayer.commandNoReturn('set volume '+str(percentage))
     def currentPlaylist(self):
         return [line.rstrip('\n') for line in open(playlistFile)]
     def addToPlaylist(self, file):
         if os.path.isfile(file):
+            self.playlistCount = self.playlistCount+1
             print('Adding: '+file)
             os.system('echo "'+file+'" >> '+playlistFile)
         return
     def playerState(self):
-        self.mPlayer.command('')
         indexNumber = self.currentIndex-1
         if self.currentIndex < 0:
             indexNumber = 0
@@ -139,6 +168,12 @@ def handleRequest(request):
         Thread(target=music.setPause, args=()).start()
     elif command == 'setMute':
         Thread(target=music.setMute, args=()).start()
+    elif command == 'setPrevTrack':
+        Thread(target=music.setPrevTrack, args=()).start()
+    elif command == 'setNextTrack':
+        Thread(target=music.setNextTrack, args=()).start()
+    elif command == 'skipToIndex':
+        Thread(target=music.skipToIndex, args=(int(value), )).start()
     elif command == 'setVolume':
         Thread(target=music.setVolume, args=(value, )).start()
     elif command == 'playerState':

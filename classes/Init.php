@@ -15,12 +15,15 @@ class Init {
     ini_set('session.save_path',$_SERVER['DOCUMENT_ROOT'] . "/sessions");
     if (!Database::getInstance()->isConnected()) {
       $render = new Render();
-      $render->renderPage('noConnection', false);
+      $render->renderPage('dbNoConnection', false);
+    }
+    else if (!MusicPlayer::getInstance()->isConnected()) {
+      $render = new Render();
+      $render->renderPage('mpNoConnection', false);
     }
     else {
       Controller::getInstance()->fetchController();
     }
-
     exit();
   }
 }

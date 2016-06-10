@@ -294,14 +294,6 @@ h3 {
   border-top: 1px dotted #222;
   padding: 15px 5px;
 }
-/*.ready.loaded .list > ul > li {
-  -webkit-animation-name: fadeInUp;
-  animation-name: fadeInUp;
-  -webkit-animation-duration: 0.5s;
-  animation-duration: 0.5s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}*/
 .panel .list > ul > li {
   border-top: 1px dotted #2b2b2b;
 }
@@ -570,6 +562,16 @@ h3 {
   max-width: 200px;
   border-radius: 50%;
 }
+.artist .artistArt .lazy {
+  opacity: 0;
+}
+.artist .artistArt .lazy.loaded {
+  opacity: 1;
+  -moz-transition: opacity 0.4s linear;
+  -webkit-transition: opacity 0.4s linear;
+  -o-transition: opacity 0.4s linear;
+  transition: opacity 0.4s linear;
+}
 .artist .albums > ul > li:nth-child(2) {
   border-top: 0;
 }
@@ -582,7 +584,29 @@ h3 {
   }
 }
 /* ARTIST PAGE END */
+/* PLAYLIST PAGE */
+#playlistWrapper {
+  opacity: 0;
+}
+#playlistWrapper.loaded {
+  opacity: 1;
+  -moz-transition: opacity 0.4s linear;
+  -webkit-transition: opacity 0.4s linear;
+  -o-transition: opacity 0.4s linear;
+  transition: opacity 0.4s linear;
+}
+/* PLAYLIST PAGE END */
 /* CONTROLS PAGE */
+#controlsWrapper {
+  opacity: 0;
+}
+#controlsWrapper.loaded {
+  opacity: 1;
+  -moz-transition: opacity 0.4s linear;
+  -webkit-transition: opacity 0.4s linear;
+  -o-transition: opacity 0.4s linear;
+  transition: opacity 0.4s linear;
+}
 .controls #volumeDial #muteButton {
   font-size: 60px;
   width: 60px;
@@ -596,9 +620,16 @@ h3 {
   border-radius: 50%;
   cursor: pointer;
 }
+.controls #volumeDial #muteButton i.fa {
+  float: left;
+}
 .controls .btn.player {
   padding-left: 13px;
   padding-right: 13px;
+}
+.controls #pauseButton {
+  text-align: center;
+  min-width: 60px;
 }
 /* CONTROLS PAGE END */
 /* OVERLAY AND LOADER */

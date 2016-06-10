@@ -36,14 +36,75 @@ class MusicPlayer {
     }
     self::$playerState = $playerState;
   }
+  public static function isConnected() {
+    if (!empty((array)self::getPlayerState()))
+      return true;
+    return false;
+  }
   public static function getPlayerState() {
-    return self::$playerState;
+    self::populateState();
+    if (self::$playerState)
+      return self::$playerState;
+    else
+      return false;
   }
   public static function setVolume($percentage) {
     $post = array(
       'secret' => _PLAYER_SECRET_,
       'command' => 'setVolume',
       'value' => (int)$percentage,
+    );
+    $http = Http::post(self::$url, $post);
+    if ($http == 200) {
+      self::populateState();
+      return true;
+    }
+    return false;
+  }
+  public static function setPause() {
+    $post = array(
+      'secret' => _PLAYER_SECRET_,
+      'command' => 'setPause',
+      'value' => '',
+    );
+    $http = Http::post(self::$url, $post);
+    if ($http == 200) {
+      self::populateState();
+      return true;
+    }
+    return false;
+  }
+  public static function setPrevTrack() {
+    $post = array(
+      'secret' => _PLAYER_SECRET_,
+      'command' => 'setPrevTrack',
+      'value' => '',
+    );
+    $http = Http::post(self::$url, $post);
+    if ($http == 200) {
+      self::populateState();
+      return true;
+    }
+    return false;
+  }
+  public static function setNextTrack() {
+    $post = array(
+      'secret' => _PLAYER_SECRET_,
+      'command' => 'setNextTrack',
+      'value' => '',
+    );
+    $http = Http::post(self::$url, $post);
+    if ($http == 200) {
+      self::populateState();
+      return true;
+    }
+    return false;
+  }
+  public static function setMute() {
+    $post = array(
+      'secret' => _PLAYER_SECRET_,
+      'command' => 'setMute',
+      'value' => '',
     );
     $http = Http::post(self::$url, $post);
     if ($http == 200) {

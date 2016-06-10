@@ -12,7 +12,7 @@
 <div class="artist row">
   <?php if($lastFmArtist){?>
     <div class="artistArt col-xs-12 col-sm-3 col-md-3 col-lg-2">
-      <img src="<?php echo $lastFmArtistImage?>" title="<?php echo $thisArtist->name?>" />
+      <img class="lazy" src="/download/noAlbumArt.jpg" title="<?php echo $thisArtist->name?>" data-original="<?php echo $lastFmArtistImage?>"/>
     </div>
     <div class="col-xs-12 col-sm-9 col-md-9 col-lg-10">
       <h1><?php echo $thisArtist->name?></h1>
@@ -87,6 +87,12 @@
         load : function()
         {
           $(this).closest('.albumArt').addClass('loaded')
+        }
+      });
+      $('.artist .artistArt .lazy').lazyload({
+        load : function()
+        {
+          $(this).addClass('loaded')
         }
       });
     });

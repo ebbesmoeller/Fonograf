@@ -42,14 +42,14 @@ class Indexation {
           }
           catch (Exception $e) {}
           $track = new Track();
-          $track->name = Database::cleanInput($id3['TIT2']['body']);
-          $track->album = Database::cleanInput($id3['TALB']['body']);
+          $track->name = Database::cleanInput($id3['TIT2']['body'],false);
+          $track->album = Database::cleanInput($id3['TALB']['body'],false);
           if ($id3['TPE2'])
-            $track->artist = Database::cleanInput($id3['TPE2']['body']);
+            $track->artist = Database::cleanInput($id3['TPE2']['body'],false);
           else
-            $track->artist = Database::cleanInput($id3['TPE1']['body']);
+            $track->artist = Database::cleanInput($id3['TPE1']['body'],false);
           $track->track = (int)explode('/',Database::cleanInput($id3['TRCK']['body']))[0];
-          $track->genre = Database::cleanInput($id3['TCON']['body']);
+          $track->genre = Database::cleanInput($id3['TCON']['body'],false);
           $track->year = (int)$id3['TYER']['body'];
           $track->path = Database::cleanInput($folder);
           $track->file = Database::cleanInput(str_replace($folder.'/', '', $item));

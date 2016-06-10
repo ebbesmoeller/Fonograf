@@ -14,6 +14,8 @@ class Http {
     curl_setopt($ch,CURLOPT_URL, $curlUrl);
     curl_setopt($ch,CURLOPT_HTTPGET, 1);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,4000);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 6000);
     $result = curl_exec($ch);
     $information = curl_getinfo($ch);
     curl_close($ch);
@@ -33,10 +35,13 @@ class Http {
     curl_setopt($ch,CURLOPT_URL, $curlUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch,CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,4000);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 6000);
     $result = curl_exec($ch);
     $information = curl_getinfo($ch);
     curl_close($ch);
     $status = (int)$information['http_code'];
     $data = $result;
+    return $status;
   }
 }

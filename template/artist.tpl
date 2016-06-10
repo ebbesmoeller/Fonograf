@@ -82,7 +82,7 @@
 <?php
   $javascripts[] = "
   <script type='text/javascript'>
-    $('body').on('loaded', function() {
+    $('body').on('loadEnd', function() {
       $('.grid.albums.lazy img.lazy').lazyload({
         load : function()
         {

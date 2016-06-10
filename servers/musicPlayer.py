@@ -2,6 +2,7 @@
 import sys, inspect, cgi, os, subprocess, pipes, json, select, time, threading
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from urlparse import parse_qs
+from threading import Thread
 
 # SETTINGS
 serverPort = 40000
@@ -47,13 +48,18 @@ class musicPlayer (threading.Thread):
         self.currentlyPlaying = ''
         self.currentIndex = 0
         self.loopingPlayback = False
+        self.volume = 100
+        self.pause = False
+        self.mute = False
     def run(self):
         time.sleep(3)
+        self.setVolume(self.volume)
         self.mPlayer.command('loadfile "'+baseDir+'/../effects/start.mp3"')
         while not self.kill:
             self.playlister()
     def playlister(self):
         if not self.mPlayer.command('get_file_name'):
+            self.currentlyPlaying = ''
             lines = [line.rstrip('\n') for line in open(playlistFile)]
             if lines:
                 if 0 <= self.currentIndex < len(lines):
@@ -67,30 +73,22 @@ class musicPlayer (threading.Thread):
                         self.currentIndex = 0
                     self.currentlyPlaying = ''
         time.sleep(0.1)
-    def pause(self):
+
+    def setPause(self):
+        if self.pause:
+            self.pause = False
+        elif not self.pause:
+            self.pause = True
         self.mPlayer.command('pause')
-    def playerState(self):
-        # self.mPlayer.command('')
-        # pauseState = True
-        # try:
-        #     if self.mPlayer.command('get_property pause')[0] == 'ANS_pause=no\n':
-        #         pauseState = False
-        # except IndexError:
-        #     pauseState = True
-
-        indexNumber = self.currentIndex-1
-        if self.currentIndex < 0:
-            indexNumber = 0
-
-        state = [
-            {
-            # 'pauseState': pauseState,
-            'playing': self.currentlyPlaying,
-            'index': indexNumber,
-            'loop': self.loopingPlayback
-            },
-        ]
-        return state[0]
+    def setMute(self):
+        if self.mute:
+            self.mute = False
+        elif not self.mute:
+            self.mute = True
+        self.mPlayer.command('mute')
+    def setVolume(self, percentage):
+        self.volume = int(percentage)
+        self.mPlayer.command('set volume '+str(percentage))
     def currentPlaylist(self):
         return [line.rstrip('\n') for line in open(playlistFile)]
     def addToPlaylist(self, file):
@@ -98,6 +96,22 @@ class musicPlayer (threading.Thread):
             print('Adding: '+file)
             os.system('echo "'+file+'" >> '+playlistFile)
         return
+    def playerState(self):
+        self.mPlayer.command('')
+        indexNumber = self.currentIndex-1
+        if self.currentIndex < 0:
+            indexNumber = 0
+        state = [
+            {
+            'pause': self.pause,
+            'mute': self.mute,
+            'playing': self.currentlyPlaying,
+            'index': indexNumber,
+            'loop': self.loopingPlayback,
+            'volume': self.volume
+            },
+        ]
+        return state[0]
 
 #SETUP
 if not os.path.isdir(tempDir):
@@ -119,10 +133,16 @@ def handleRequest(request):
 
     if command == 'playlistAdd':
         music.addToPlaylist(value)
-    elif command == 'playerState':
-        return json.dumps(music.playerState())
     elif command == 'playlist':
         return json.dumps(music.currentPlaylist())
+    elif command == 'setPause':
+        Thread(target=music.setPause, args=()).start()
+    elif command == 'setMute':
+        Thread(target=music.setMute, args=()).start()
+    elif command == 'setVolume':
+        Thread(target=music.setVolume, args=(value, )).start()
+    elif command == 'playerState':
+        return json.dumps(music.playerState())
     return
 
 class S(BaseHTTPRequestHandler):

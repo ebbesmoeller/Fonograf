@@ -582,6 +582,25 @@ h3 {
   }
 }
 /* ARTIST PAGE END */
+/* CONTROLS PAGE */
+.controls #volumeDial #muteButton {
+  font-size: 60px;
+  width: 60px;
+  height: 60px;
+  margin: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.controls .btn.player {
+  padding-left: 13px;
+  padding-right: 13px;
+}
+/* CONTROLS PAGE END */
 /* OVERLAY AND LOADER */
 #overlay {
   content: '';

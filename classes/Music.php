@@ -2,7 +2,7 @@
 class Music {
   private static function makeStringSearchable($string) {
     $string = mb_strtolower($string);
-    $charactersToReplace = array('á','à','â','å','ã','ä','æ','ç','é','è','ê','ë','í','ì','î','ï','ñ','ó','ò','ô','ø','õ','ö','ß','ú','ù','û','ü','ÿ','\'','"','@');
+    $charactersToReplace = array('a','á','à','â','å','ã','ä','æ','ç','e','é','è','ê','ë','i','í','ì','î','ï','ñ','o','ó','ò','ô','ø','õ','ö','ß','u','ú','ù','û','ü','ÿ','\'','"','@');
     $string = str_replace($charactersToReplace,'_',$string);
     return $string;
   }
@@ -66,7 +66,7 @@ class Music {
     return self::queryForTracks($query);
   }
   public static function searchTracks($searchTerm) {
-    $searchTerm = Database::cleanInput(self::makeStringSearchable($searchTerm));
+    $searchTerm = Database::cleanInput($searchTerm,false);
     $query = 'SELECT tr.`id`, tr.`name`, tr.`path`, tr.`file`, al.`name` AS \'album\', at.`name` AS \'artist\', tr.`id_album`, tr.`id_artist`, tr.`track`, tr.`genre`, tr.`year` FROM `tracks` AS tr JOIN `artists` AS at ON tr.`id_artist` = at.`id` JOIN `albums` AS al ON tr.`id_album` = al.`id` WHERE tr.`name` LIKE \'%'.$searchTerm.'%\' ORDER BY tr.`name`;';
     return self::queryForTracks($query);
   }
@@ -103,7 +103,7 @@ class Music {
     return $results;
   }
   public static function searchArtists($searchTerm) {
-    $searchTerm = Database::cleanInput(self::makeStringSearchable($searchTerm));
+    $searchTerm = Database::cleanInput(self::makeStringSearchable($searchTerm),false);
     $query = 'SELECT * FROM `artists` WHERE `name` LIKE \'%'.$searchTerm.'%\' ORDER BY `name`;';
     return self::queryForArtists($query);
   }
@@ -127,7 +127,7 @@ class Music {
     return $results;
   }
   public static function searchAlbums($searchTerm) {
-    $searchTerm = Database::cleanInput(self::makeStringSearchable($searchTerm));
+    $searchTerm = Database::cleanInput(self::makeStringSearchable($searchTerm),false);
     $query = 'SELECT * FROM `albums` WHERE `name` LIKE \'%'.$searchTerm.'%\' ORDER BY `name`;';
     return self::queryForAlbums($query);
   }

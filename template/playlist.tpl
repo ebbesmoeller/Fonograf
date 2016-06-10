@@ -1,6 +1,6 @@
 <?php
-  $playerState = musicPlayer::getState();
-  $playlistIndex = (int)$playerState['index'];
+  $playerState = musicPlayer::getInstance()->getPlayerState();
+  $playlistIndex = (int)$playerState->index;
   $playlist = array();
 
   foreach (musicPlayer::getPlaylist() as $key => $file) {
@@ -8,6 +8,10 @@
       $playlist[] = Music::getTrackByFile($file);
   }
 ?>
+<?php if(!$content_only){?>
+  <div id="playlistWrapper">
+<?php }?>
+
 <h1><?php $t->t('Playlist')?></h1>
 <div class="list tracks noAdd">
   <ul>
@@ -23,7 +27,7 @@
       </div>
     </li>
   </ul>
-  <?php if (count($playlist)>0) {?>
+  <?php if (count($playlist)>0 && $playerState->playing) {?>
     <ul id="songList">
       <li class="hidden"></li>
       <?php foreach($playlist as $key => $track) {?>
@@ -45,15 +49,26 @@
   <?php }?>
 </div>
 
+<?php if(!$content_only){?>
+</div>
+<?php }?>
+
 <?php
   // $javascripts[] = "
   //   <script type=\"text/javascript\">
-  //     setInterval(function(){reloadPlaylist();}, 6000);
+  //     var playlistUpdater
   //     function reloadPlaylist() {
   //       $.get(appendQueryString(window.location.href, {'content_only':''}), function(data) {
-  //         $( \"#mainContent\" ).html( data );
+  //         $(\"#playlistWrapper\").html(data);
   //       });
   //     }
+  //     $('body').on('loadEnd', function() {
+  //       playlistUpdater = setInterval(function(){reloadPlaylist();}, 5000);
+  //       console.log('got playlist');
+  //     });
+  //     $('body').on('loadBegin', function() {
+  //       clearInterval(playlistUpdater);
+  //     });
   //   </script>
   // ";
 ?>

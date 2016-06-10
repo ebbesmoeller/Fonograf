@@ -10,6 +10,7 @@ class Database {
   }
   private function query($query = "") {
     $dbConnection = new mysqli(_SQL_SERVER_, _SQL_USER_, _SQL_PASS_,_SQL_DB_,_SQL_PORT_);
+    mysqli_set_charset($dbConnection, 'utf8');
     if (!$dbConnection->connect_errno > 0) {
       if ($query != '') {
         if($result = $dbConnection->query($query)){
@@ -41,15 +42,15 @@ class Database {
     self::query($query);
   }
 
-  public static function cleanInput($input) {
+  public static function cleanInput($input, $htmlentities=true) {
     $toRemove = [';'];
     $input = str_replace($toRemove,'',$input);
     $input = str_replace('\'','\'\'',$input);
     $input = str_replace('"','""',$input);
-    $inputCopy = $input;
-    $input = htmlentities($input);
-    if ($input == '') {
-      $input = utf8_encode($inputCopy);
+    if (htmlentities($input) == '') {
+      $input = utf8_encode($input);
+    }
+    if ($htmlentities) {
       $input = htmlentities($input);
     }
     return $input;

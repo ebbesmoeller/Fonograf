@@ -11,8 +11,8 @@ $(window).bind("load", function() {
 });
 
 function triggerLoaded() {
+  $('body').trigger('loadEnd');
   $('body').addClass('loaded');
-  $('body').trigger('loaded');
   setTimeout(function(){
     $('#loader').hide();
   }, 400);
@@ -70,6 +70,7 @@ window.addEventListener("popstate", function(e) {
 });
 
 function reloadAsync(url) {
+  $('body').trigger('loadBegin');
   scrollToTop();
   $('#loader').show();
   $('body').removeClass('ready').removeClass('loaded');
@@ -77,7 +78,7 @@ function reloadAsync(url) {
     $( "#mainContent" ).html( data );
     history.pushState('data', '', url);
     $('body').addClass('ready').addClass('loaded');
-    $('body').trigger('loaded');
+    $('body').trigger('loadEnd');
     setTimeout(function(){
       $('#loader').hide();
     }, 400);

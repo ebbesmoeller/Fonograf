@@ -110,7 +110,7 @@
   $javascripts[] = "<script src=\"/template/style/js/jquery.paginate.min.js\"></script>";
   $javascripts[] = "
   <script type='text/javascript'>
-    $('body').on('loaded', function() {
+    $('body').on('loadEnd', function() {
       $('.grid.albums.lazy img.lazy').lazyload({
         load : function()
         {

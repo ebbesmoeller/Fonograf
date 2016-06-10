@@ -1,8 +1,10 @@
 <?php
 class Render {
   public function renderPage($template = "index", $chrome = true) {
+    header('Content-Type: text/html; charset=utf-8');
     $templateDir = "template";
     $t = new Translation;
+    $content_only = $chrome;
     $javascripts=array();
     if (is_dir($templateDir)) {
       $thisController = $template;

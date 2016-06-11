@@ -11,3 +11,11 @@
     </p>
   </div>
 </div>
+
+<div class="panel">
+  <div class="panel-body">
+    <p style="line-height: 30px; margin: 0; font-size: 11px;">
+      Powered by hope, dreams, and <a href="https://raspberrypi.org/" target="_blank">Raspberries</a> <img src="/template/style/graphics/raspberryPi.png" style="max-height: 30px; float: right;"/>
+    </p>
+  </div>
+</div>

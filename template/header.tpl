@@ -1,11 +1,14 @@
-<html>
+<!DOCTYPE html>
+<html lang="<?php echo _LANGUAGE_ISO_?>">
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title><?php $t->t('Fonograf')?></title>
     <link rel="stylesheet" href="/template/style/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/template/style/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/template/style/css/animate.css">
     <link rel="stylesheet" href="/template/style/css/global.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/png" href="/template/style/graphics/favicon.png">
   </head>
   <body>
@@ -15,7 +18,11 @@
         <i class="fa fa-bars" aria-hidden="true"></i>
       </a>
       <div class="logo">
-        <img src="/template/style/graphics/logoWhite.png" />
+        <?php if(Authentication::isAuthenticated()) {?>
+          <img src="/template/style/graphics/logoRed.png" />
+        <?php } else {?>
+          <img src="/template/style/graphics/logoWhite.png" />
+        <?php }?>
       </div>
       <a id="toTop" title="<?php $t->t('To the top')?>">
         <i class="fa fa-chevron-up" aria-hidden="true"></i>

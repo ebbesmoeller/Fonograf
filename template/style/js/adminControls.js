@@ -20,9 +20,11 @@ $(function() {
 // VOLUME KNOB END
 
 // MUTE BUTTON
-$(document).on('click', '#muteButton', function(e) {
-  $.post(appendQueryString(window.location.href, {'setMute':''}));
-});
+if (!muteButtonClick) {
+  var muteButtonClick = $(document).on('click', '#muteButton', function(e) {
+    $.post(appendQueryString(window.location.href, {'setMute':''}));
+  });
+}
 function setMuteButton(boolean) {
   var muteButton = $('#muteButton');
   if (boolean) {
@@ -37,9 +39,11 @@ function setMuteButton(boolean) {
 // MUTE BUTTON END
 
 // PAUSE BUTTON
-$(document).on('click', '#pauseButton', function(e) {
-  $.post(appendQueryString(window.location.href, {'setPause':''}));
-});
+if (!pauseButtonClick) {
+  var pauseButtonClick = $(document).on('click', '#pauseButton', function(e) {
+    $.post(appendQueryString(window.location.href, {'setPause':''}));
+  });
+}
 function setPauseButton(boolean) {
   var pauseButton = $('#pauseButton');
   if (boolean) {
@@ -54,15 +58,19 @@ function setPauseButton(boolean) {
 // PAUSE BUTTON END
 
 // PREVIOUS BUTTON
-$(document).on('click', '#prevButton', function(e) {
-  $.post(appendQueryString(window.location.href, {'setPrevTrack':''}));
-});
+if (!prevButtonClick) {
+  var prevButtonClick = $(document).on('click', '#prevButton', function(e) {
+    $.post(appendQueryString(window.location.href, {'setPrevTrack':''}));
+  });
+}
 // PREVIOUS BUTTON END
 
 // NEXT BUTTON
-$(document).on('click', '#nextButton', function(e) {
-  $.post(appendQueryString(window.location.href, {'setNextTrack':''}));
-});
+if (!nextButtonClick) {
+  var nextButtonClick = $(document).on('click', '#nextButton', function(e) {
+    $.post(appendQueryString(window.location.href, {'setNextTrack':''}));
+  });
+}
 // NEXT BUTTON END
 
 
@@ -76,13 +84,19 @@ function updateState() {
     }).done(function(data){
 
       // SONG NAME
-      if ($('#songName').html() != data.track) {
-        $('#songName').html(data.track);
+      trackName = data.track;
+      if (trackName == null)
+        trackName = '&nbsp;';
+      if ($('#songName').html() != trackName) {
+        $('#songName').html(trackName);
       }
 
       // ARTIST NAME
-      if ($('#artistName').html() != data.artist) {
-        $('#artistName').html(data.artist);
+      artistName = data.artist;
+      if (artistName == null)
+        artistName = '&nbsp;';
+      if ($('#artistName').html() != artistName) {
+        $('#artistName').html(artistName);
       }
 
       // MUTE STATE
@@ -96,8 +110,6 @@ function updateState() {
 
       // PAUSE STATE
       var buttonPaused = $('#pauseButton').hasClass('paused');
-      console.log(buttonPaused);
-      console.log(data.pause);
       if (buttonPaused && !data.pause) {
         setPauseButton(false);
       }
@@ -111,7 +123,7 @@ function updateState() {
   }
 }
 $('body').on('loadEnd', function() {
-  if (stateUpdater == null) {
+  if (!stateUpdater) {
     stateUpdater = setInterval(function(){updateState();}, 2000);
   }
 });

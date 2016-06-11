@@ -56,7 +56,7 @@ class musicPlayer (threading.Thread):
         self.playlistCount = 0
         self.currentIndex = 0
         self.loopingPlayback = False
-        self.volume = 100
+        self.volume = 45
         self.pause = False
         self.mute = False
     def run(self):

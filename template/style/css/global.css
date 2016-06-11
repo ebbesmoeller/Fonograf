@@ -228,7 +228,7 @@ h3 {
   display: block;
   cursor: pointer;
   padding: 17px;
-  padding-top: 16px;
+  padding-top: 12px;
   background: #222;
   color: #f1f1f1;
   font-size: 30px;
@@ -246,7 +246,7 @@ h3 {
   display: none;
   cursor: pointer;
   padding: 18px;
-  padding-top: 15px;
+  padding-top: 12px;
   background: #222;
   color: #f1f1f1;
   font-size: 25px;
@@ -399,7 +399,10 @@ h3 {
     position: absolute;
     text-align: left;
     overflow: inherit;
-    margin-top: 19px;
+    line-height: 68px;
+  }
+  .list.tracks.artist > ul > li > *:nth-child(1) {
+    line-height: 50px;
   }
   .list.tracks > ul > li a.addTrack i {
     /*margin-top: 18px;*/
@@ -492,36 +495,63 @@ h3 {
   width: 100%;
   display: block;
   margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 40px;
 }
 #mainContent .grid.albums .albumInfo .albumArtist,
 #mainContent .grid.albums .albumInfo .albumArtist a {
   font-size: 12px;
   color: #606060;
 }
+@media(max-width: 530px) {
+  .grid.albums .albumInfo .albumTitle {
+    font-size: 12px;
+  }
+}
 /* GRIDS END */
 /* TABS */
+.musicTabs {
+  margin-top: -15px;
+  margin-left: -15px;
+  margin-right: -15px;
+  background: #2b2b2b;
+  height: 47px;
+}
 .nav-tabs {
   border-bottom: 0;
 }
 .nav-tabs > li,
 .nav-tabs > li > a {
-  color: #f1f1f1;
+  height: 47px;
+  line-height: 25px;
+  margin-right: 0;
 }
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:focus,
-.nav-tabs > li.active > a:hover {
-  color: #f1f1f1;
+#mainContent .nav-tabs > li.active > a,
+#mainContent .nav-tabs > li.active > a:focus,
+#mainContent .nav-tabs > li.active > a:hover {
+  color: #ff1e53;
+  background-color: #252525;
+  border: 1px solid #252525;
+  border-radius: 0;
+}
+#mainContent .nav>li>a:focus,
+#mainContent .nav>li>a:hover {
+  color: #ff1e53;
+  text-decoration: none;
+  background-color: transparent;
   background-color: #222;
   border: 1px solid #222;
   border-radius: 0;
 }
-.nav>li>a:focus,
-.nav>li>a:hover {
-  background-color: transparent;
-  border: 1px solid #222;
-  border-radius: 0;
-}
 /* TABS END */
+/* SEARCH PAGE */
+@media (max-width: 767px) {
+  .searchResult .row.row-flex.row-flex-wrap {
+    display: block;
+  }
+}
+/* SEARCH PAGE END */
 /* ALBUM PAGE */
 .album .albumArt {
   opacity: 0;

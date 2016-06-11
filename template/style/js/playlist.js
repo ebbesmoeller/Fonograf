@@ -13,5 +13,10 @@ $('body').on('loadEnd', function() {
     playlistUpdater = setInterval(function(){reloadPlaylist();}, 4500);
   }
 });
+$('body').on('loadBegin', function() {
+  if (playlistUpdater) {
+    playlistUpdater = null
+  }
+});
 reloadPlaylist();
 // PLAYLIST UPDATER END

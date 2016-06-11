@@ -1,4 +1,8 @@
 <?php
+  if (!Authentication::isAuthenticated()) {
+    header('Location: /?p=adminLogin');
+  }
+  
   $playerState = MusicPlayer::getInstance()->getPlayerState();
   $playlistIndex = (int)$playerState->index;
   $playlist = array();

@@ -77,11 +77,13 @@ function reloadAsync(url) {
   $.get(appendQueryString(url, {'content_only':''}), function(data) {
     $( "#mainContent" ).html( data );
     history.pushState('data', '', url);
-    $('body').addClass('ready').addClass('loaded');
-    $('body').trigger('loadEnd');
     setTimeout(function(){
-      $('#loader').hide();
-    }, 400);
+      $('body').addClass('ready').addClass('loaded');
+      $('body').trigger('loadEnd');
+      setTimeout(function(){
+        $('#loader').hide();
+      }, 400);
+    }, 200);
   });
 }
 

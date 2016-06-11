@@ -4,6 +4,12 @@
   $menu['search'] = [$t->r('Search'),'fa-search'];
   $menu['music'] = [$t->r('Music'),'fa-music'];
   $menu['playlist'] = [$t->r('Playlist'),'fa-list-ol'];
+
+  if (Authentication::isAuthenticated()) {
+    $menu['adminControls'] = [$t->r('Player controls'),'fa-play-circle'];
+    $menu['adminSettings'] = [$t->r('Settings'),'fa-cogs'];
+    $menu['adminLogout'] = [$t->r('Logout'),'fa-sign-out'];
+  }
 ?>
 <div id="menu">
   <ul>

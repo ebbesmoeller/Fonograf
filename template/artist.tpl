@@ -53,7 +53,7 @@
   <?php }?>
 </div>
 <?php if (count($tracks)>0) {?>
-  <div class="list tracks">
+  <div class="list tracks artist">
     <ul>
       <li class="row">
         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">

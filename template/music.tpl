@@ -3,17 +3,17 @@
   $albums = Music::getAllAlbums();
   $tracks = Music::getAllTracks();
 ?>
-<ul class="nav nav-tabs" role="tablist">
-  <li role="presentation" class="active"><a href="#albums" aria-controls="albums" role="tab" data-toggle="tab"><?php $t->t('Albums')?></a></li>
-  <li role="presentation"><a href="#artists" aria-controls="artists" role="tab" data-toggle="tab"><?php $t->t('Artists')?></a></li>
-  <li role="presentation"><a href="#songs" aria-controls="songs" role="tab" data-toggle="tab"><?php $t->t('Songs')?></a></li>
+<ul class="musicTabs nav nav-tabs" role="tablist">
+  <li role="presentation" class="active"><a href="#albums" aria-controls="albums" role="tab" data-toggle="tab"><i class="fa fa-play-circle-o" aria-hidden="true"></i>&nbsp;<?php $t->t('Albums')?></a></li>
+  <li role="presentation"><a href="#artists" aria-controls="artists" role="tab" data-toggle="tab"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;<?php $t->t('Artists')?></a></li>
+  <li role="presentation"><a href="#songs" aria-controls="songs" role="tab" data-toggle="tab"><i class="fa fa-music" aria-hidden="true"></i>&nbsp;<?php $t->t('Songs')?></a></li>
 </ul>
 <br />
 <div class="tab-content">
   <div role="tabpanel" class="tab-pane fade in active" id="albums">
     <?php if (count($albums)>0) {?>
       <div class="grid albums lazy">
-        <ul class="row row-flex row-flex-wrap" id="albumList">
+        <ul class="row" id="albumList">
           <?php foreach($albums as $album) {?>
             <li class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
               <a href="/?p=album&id=<?php echo $album->id?>" class="albumArt async">
@@ -23,9 +23,6 @@
               </a>
               <div class="albumInfo">
                 <a href="/?p=album&id=<?php echo $album->id?>" class="albumTitle async"><?php echo $album->name?></a>
-                <?php foreach(Music::getAlbumArtists($album->id) as $key => $artist) {?>
-                  <span class="albumArtist"><?php if($key>0){?>&nbsp;-&nbsp;<?php }?><a href="/?p=artist&id=<?php echo $artist->id?>" class="async"><?php echo $artist->name?></a></span>
-                <?php }?>
               </div>
             </li>
           <?php }?>

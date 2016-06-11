@@ -1,4 +1,8 @@
 <?php
+  if (!Authentication::isAuthenticated()) {
+    header('Location: /?p=adminLogin');
+  }
+
   $playerState = MusicPlayer::getInstance()->getPlayerState();
   if (Post::getQuery('setPause')) {
     MusicPlayer::setPause();

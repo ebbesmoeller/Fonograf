@@ -15,3 +15,10 @@ $('body').on('loadEnd', function() {
 });
 reloadPlaylist();
 // PLAYLIST UPDATER END
+// SKIP TO INDEX
+  var skipButtonClick = $(document).on('click', '.skipButton', function(e) {
+    e.preventDefault();
+    $.post(appendQueryString($(this)[0].href, {'content_only':''}));
+    skipButtonClick = null;
+  });
+// SKIP TO INDEX END

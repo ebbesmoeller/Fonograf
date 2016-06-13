@@ -384,6 +384,20 @@ h3 {
 #mainContent .list.tracks > ul > li.playing > *:nth-child(2) {
   color: #ff1e53;
 }
+#mainContent .list.tracks > ul > li .actions a {
+  font-size: 25px;
+  line-height: 25px;
+  margin-top: -2px;
+  margin-bottom: -10px;
+  margin-right: 10px;
+}
+#mainContent .list.tracks > ul > li .actions a:hover {
+  color: #ff1e53;
+  -moz-transition: color 0.2s linear;
+  -webkit-transition: color 0.2s linear;
+  -o-transition: color 0.2s linear;
+  transition: color 0.2s linear;
+}
 .list.tracks.noAdd > ul > li:nth-child(1) > *:nth-child(1),
 .list.tracks.noAdd > ul > li:nth-child(n+2) > *:nth-child(2) {
   margin-left: 0;
@@ -441,6 +455,14 @@ h3 {
 }
 /* LISTS END */
 /* GRIDS */
+.row .col-xs-0,
+.row .col-sm-0,
+.row .col-md-0,
+.row .col-lg-0 {
+  width: 0%;
+  margin: 0;
+  padding: 0;
+}
 .grid ul {
   margin: 0;
   padding: 0;

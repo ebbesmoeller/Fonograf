@@ -75,6 +75,8 @@ class BinaryFileReader
 
         foreach ($this->map as $key => $info) {
 
+            print_r($info);
+            echo 'memory usage: '.((int)memory_get_usage()/1000000.0).' MB <br />';
             $this->fillTag($info, $key);
 
             if (isset($info[2])) {

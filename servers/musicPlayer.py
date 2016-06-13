@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys, inspect, cgi, os, subprocess, pipes, json, select, time, threading
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from mutagen.easyid3 import EasyID3
 from urlparse import parse_qs
 from threading import Thread
 
@@ -56,13 +57,14 @@ class musicPlayer (threading.Thread):
         self.playlistCount = 0
         self.currentIndex = 0
         self.loopingPlayback = False
-        self.volume = 45
+        self.volume = 25
         self.pause = False
         self.mute = False
     def run(self):
         time.sleep(3)
         self.setVolume(self.volume)
         self.mPlayer.command('loadfile "'+baseDir+'/../effects/start.mp3"')
+        self.setVolume(self.volume)
         while not self.kill:
             self.playlister()
     def playlister(self):
@@ -103,9 +105,25 @@ class musicPlayer (threading.Thread):
         elif not self.mute:
             print 'Muted'
             self.mute = True
+    def emptyPlaylist(self):
+        self.playlistCount == 0
+        os.system('cat /dev/null > '+playlistFile)
     def skipToIndex(self, index):
         self.mPlayer.commandNoReturn('stop')
         self.currentIndex = int(index)
+    def removeIndex(self, index):
+        currentIndex = self.currentIndex+1
+        if currentIndex > int(index):
+            self.currentIndex = int(currentIndex)-1
+        if currentIndex == int(index):
+            self.mPlayer.commandNoReturn('stop')
+        counter = 0
+        currentPlaylist = self.currentPlaylist()
+        self.emptyPlaylist()
+        for track in currentPlaylist:
+            if counter != int(index):
+                self.addToPlaylist(track)
+            counter = counter+1
     def setPrevTrack(self):
         if self.currentlyPlaying != '':
             newIndex = self.currentIndex-2
@@ -123,7 +141,6 @@ class musicPlayer (threading.Thread):
     def addToPlaylist(self, file):
         if os.path.isfile(file):
             self.playlistCount = self.playlistCount+1
-            print('Adding: '+file)
             os.system('echo "'+file+'" >> '+playlistFile)
         return
     def playerState(self):
@@ -141,6 +158,38 @@ class musicPlayer (threading.Thread):
             },
         ]
         return state[0]
+class fileInfo(threading.Thread):
+    def mp3File(self, filePath):
+        audio = EasyID3(filePath)
+        track = {
+            'title': '',
+            'artist': '',
+            'performer': '',
+            'album': '',
+            'tracknumber': '',
+            'genre': '',
+            'date': '',
+        }
+        if 'title' in audio:
+            track['title'] = audio['title'][0]
+        if 'artist' in audio:
+            track['artist'] = audio['artist'][0]
+        if 'performer' in audio:
+            track['performer'] = audio['performer'][0]
+        if 'album' in audio:
+            track['album'] = audio['album'][0]
+        if 'tracknumber' in audio:
+            track['tracknumber'] = audio['tracknumber'][0]
+        if 'genre' in audio:
+            track['genre'] = audio['genre'][0]
+        if 'date' in audio:
+            track['date'] = audio['date'][0]
+        return track
+    def getFileMeta(self, filePath):
+        extension = os.path.splitext(filePath)[1]
+        if extension == '.mp3':
+            return self.mp3File(filePath)
+        return
 
 #SETUP
 if not os.path.isdir(tempDir):
@@ -149,6 +198,8 @@ if not os.path.isdir(tempDir):
 os.system('cat /dev/null > '+playlistFile)
 music = musicPlayer()
 music.daemon = True
+fInfo = fileInfo()
+fInfo.daemon = True
 
 # SERVER
 def handleRequest(request):
@@ -162,18 +213,22 @@ def handleRequest(request):
 
     if command == 'playlistAdd':
         music.addToPlaylist(value)
+    if command == 'getFileMeta':
+        return json.dumps(fInfo.getFileMeta(value))
     elif command == 'playlist':
         return json.dumps(music.currentPlaylist())
     elif command == 'setPause':
         Thread(target=music.setPause, args=()).start()
     elif command == 'setMute':
         Thread(target=music.setMute, args=()).start()
+    elif command == 'skipToIndex':
+        Thread(target=music.skipToIndex, args=(int(value), )).start()
+    elif command == 'removeIndex':
+        Thread(target=music.removeIndex, args=(int(value), )).start()
     elif command == 'setPrevTrack':
         Thread(target=music.setPrevTrack, args=()).start()
     elif command == 'setNextTrack':
         Thread(target=music.setNextTrack, args=()).start()
-    elif command == 'skipToIndex':
-        Thread(target=music.skipToIndex, args=(int(value), )).start()
     elif command == 'setVolume':
         Thread(target=music.setVolume, args=(value, )).start()
     elif command == 'playerState':

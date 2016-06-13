@@ -43,6 +43,7 @@ class Database {
   }
 
   public static function cleanInput($input, $htmlentities=true) {
+    $input = html_entity_decode($input);
     $toRemove = [';'];
     $input = str_replace($toRemove,'',$input);
     $input = str_replace('\'','\'\'',$input);

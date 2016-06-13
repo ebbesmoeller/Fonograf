@@ -34,5 +34,12 @@ $translations = array(
   'Track' => 'Nummer',
   'Previous' => 'Forrige',
   'Next' => 'Næste',
-  'Settings' => 'Indstillinger'
+  'Actions' => 'Handlinger',
+  'Play' => 'Afspil',
+  'Remove' => 'Fjern',
+  'Settings' => 'Indstillinger',
+  'Reindex music folder' => 'Reindekser musik mappen',
+  'Please confirm reindexation of the music folder.' => 'Godkend venligst reindekseringen af musik mappen.',
+  'The webinterface might become unresponsive while in operation.' => 'Web-interfacet kan blive utilgængeligt imens det står på.',
+  'Reindexation completed!' => 'Reindekseringen blev gennemført!',
 );

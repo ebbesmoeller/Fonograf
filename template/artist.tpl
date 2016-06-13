@@ -10,7 +10,7 @@
 ?>
 
 <div class="artist row">
-  <?php if($lastFmArtist){?>
+  <?php if($lastFmArtist && $lastFmArtistImage){?>
     <div class="artistArt col-xs-12 col-sm-3 col-md-3 col-lg-2">
       <img class="lazy" src="/download/noAlbumArt.jpg" title="<?php echo $thisArtist->name?>" data-original="<?php echo $lastFmArtistImage?>"/>
     </div>

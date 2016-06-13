@@ -74,6 +74,31 @@ class MusicPlayer {
     }
     return false;
   }
+  public static function skipToIndex($index) {
+    $post = array(
+      'secret' => _PLAYER_SECRET_,
+      'command' => 'skipToIndex',
+      'value' => (int)$index,
+    );
+    $http = Http::post(self::$url, $post);
+    if ($http == 200) {
+      self::populateState();
+      return true;
+    }
+    return false;
+  }  public static function removeIndex($index) {
+      $post = array(
+        'secret' => _PLAYER_SECRET_,
+        'command' => 'removeIndex',
+        'value' => (int)$index,
+      );
+      $http = Http::post(self::$url, $post);
+      if ($http == 200) {
+        self::populateState();
+        return true;
+      }
+      return false;
+    }
   public static function setPrevTrack() {
     $post = array(
       'secret' => _PLAYER_SECRET_,

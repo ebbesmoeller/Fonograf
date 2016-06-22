@@ -1,6 +1,15 @@
 <?php
   $thisAlbum = Music::getAlbum((int)Post::getQuery('id'));
   $tracks = Music::getAlbumTracks($thisAlbum->id);
+
+  if (Post::getQuery('playlistAlbum') && Authentication::isAuthenticated()) {
+    if (MusicPlayer::addListToPlaylist($tracks)) {
+      header("HTTP/1.1 200 OK"); die();
+    }
+    else {
+      header("HTTP/1.1 404 Not Found"); die();
+    }
+  }
 ?>
 <div class="row album">
   <div class="albumArt col-xs-12 col-sm-4 col-md-4 col-lg-3">
@@ -15,6 +24,9 @@
 </div>
 
 <?php if (count($tracks)>0) {?>
+  <?php if (Authentication::isAuthenticated()) {?>
+    <button id="playlistAlbum" class="btn btn-default btn-sm"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;<?php $t->t('Add album to playlist')?></button>
+  <?php }?>
   <div class="list tracks">
     <ul>
       <li class="row">
@@ -47,3 +59,34 @@
     </ul>
   </div>
 <?php }?>
+
+<?php
+  $javascripts[] = '
+    <script type="text/javascript">
+      // ADD ALBUM TO PLAYLIST BUTTON
+      var addAlbumButtonClick = null;
+      var albumAdded = false;
+      if (!addAlbumButtonClick) {
+        addAlbumButtonClick = $("#playlistAlbum").click(function(e) {
+          if (!albumAdded) {
+            $(".list.tracks a.addTrack").addClass("getting");
+            $.post(appendQueryString(window.location.href, {"playlistAlbum":""}), function(data) {
+              $(".list.tracks a.addTrack").removeClass("getting");
+              $(".list.tracks a.addTrack").removeClass("error");
+              $(".list.tracks a.addTrack").addClass("pressed");
+              albumAdded = true;
+            }).fail(function() {
+              $(".list.tracks a.addTrack").removeClass("getting");
+              $(".list.tracks a.addTrack").removeClass("pressed");
+              $(".list.tracks a.addTrack").addClass("error");
+            });
+          }
+        });
+      }
+      $("body").on("loadBegin", function() {
+        addAlbumButtonClick = null;
+      });
+      // ADD ALBUM TO PLAYLIST BUTTON END
+    </script>
+  ';
+?>

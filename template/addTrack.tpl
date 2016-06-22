@@ -1,10 +1,10 @@
 <?php
   $track = Music::getTrack((int)Post::getQuery('id'));
   if (musicPlayer::addToPlaylist($track->path.'/'.$track->file)) {
-    header("HTTP/1.1 200 OK");
+    header("HTTP/1.1 200 OK"); die();
   }
   else {
-    header("HTTP/1.1 404 Not Found");
+    header("HTTP/1.1 404 Not Found"); die();
   }
 
   $thisPage = $_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI];

@@ -6,6 +6,8 @@ class Authentication {
     if ($username && $password) {
       if (sha1($username) == sha1(_ADMIN_USER_) && sha1($password) == sha1(_ADMIN_PASS_)) {
         $_SESSION['authenticated'] = true;
+        Colors::setColor('#8700ff');
+        Colors::blinkLeds(0,0.2,3);
         return true;
       }
     }
@@ -25,6 +27,16 @@ class Authentication {
     }
     else {
       return false;
+    }
+  }
+  public static function lockedDownPage() {
+    if (!self::isAuthenticated()) {
+      if (Post::getQuery('content_only')) {
+        header('Location: /?p=adminLogin&content_only');
+      }
+      else {
+        header('Location: /?p=adminLogin');
+      }
     }
   }
 }

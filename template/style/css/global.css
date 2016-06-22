@@ -38,6 +38,12 @@ hr {
   transition: all 0.2s linear;
   text-decoration: none
 }
+.btn.btn-sm {
+  padding: 6px 12px 4px 12px
+}
+.btn.btn-xs {
+  padding: 4px 8px 2px 8px
+}
 #mainContent a.btn:hover {
   text-decoration: none;
 }
@@ -46,7 +52,6 @@ hr {
   color: #fff;
 }
 .btn.btn-default:hover,
-.btn.btn-default:focus,
 .btn.btn-default:active,
 .btn.btn-default:active:focus {
   background: #1c1c1c;;
@@ -387,9 +392,11 @@ h3 {
 #mainContent .list.tracks > ul > li .actions a {
   font-size: 25px;
   line-height: 25px;
-  margin-top: -2px;
-  margin-bottom: -10px;
+  display: block;
+  float: left;
   margin-right: 10px;
+  margin-bottom: -3px;
+  margin-top: -1px;
 }
 #mainContent .list.tracks > ul > li .actions a:hover {
   color: #ff1e53;

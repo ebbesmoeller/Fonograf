@@ -1,7 +1,5 @@
 <?php
-  if (!Authentication::isAuthenticated()) {
-    header('Location: /?p=adminLogin');
-  }
+  Authentication::lockedDownPage();
 ?>
 <div class="panel text-center">
   <div class="panel-body">
@@ -21,6 +19,7 @@
           $.post(appendQueryString('/?p=adminReindexAsync', {'reindex':''}));
           if (!progressUpdater) {
             var progress = 0;
+            $('#reindexButton').fadeOut();
             $('#reindexProgressContainer').fadeIn();
             var progressUpdater = setInterval(function(){
               $.get({
@@ -28,10 +27,10 @@
                 cache: false
               }).done(function(data){
                 progress = data.progress;
-                console.log(progress);
                 $('#reindexProgressBar').css('width',progress+'%');
                 if (progress>=100) {
                   $('#reindexProgressContainer').fadeOut(function() {
+                    $('#reindexButton').fadeIn();
                     $('#reindexProgressBar').css('width','0%');
                     alert('".$t->r('Reindexation completed!')."');
                   });

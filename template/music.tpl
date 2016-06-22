@@ -1,12 +1,10 @@
 <?php
   $artists = Music::getAllArtists();
   $albums = Music::getAllAlbums();
-  $tracks = Music::getAllTracks();
 ?>
 <ul class="musicTabs nav nav-tabs" role="tablist">
   <li role="presentation" class="active"><a href="#albums" aria-controls="albums" role="tab" data-toggle="tab"><i class="fa fa-play-circle-o" aria-hidden="true"></i>&nbsp;<?php $t->t('Albums')?></a></li>
   <li role="presentation"><a href="#artists" aria-controls="artists" role="tab" data-toggle="tab"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;<?php $t->t('Artists')?></a></li>
-  <li role="presentation"><a href="#songs" aria-controls="songs" role="tab" data-toggle="tab"><i class="fa fa-music" aria-hidden="true"></i>&nbsp;<?php $t->t('Songs')?></a></li>
 </ul>
 <br />
 <div class="tab-content">
@@ -54,51 +52,6 @@
           <li class="next"><a id="artistList-next" class="btn btn-default" onclick="scrollToTop();"><?php $t->t('Next')?>&nbsp;<i class="fa fa-chevron-right" aria-hidden="true" style="font-size: 13px;"></i></a></li>
         </ul>
       </nav>
-    <?php }?>
-  </div>
-
-  <div role="tabpanel" class="tab-pane fade" id="songs">
-    <?php if (count($tracks)>0) {?>
-      <div class="list tracks">
-        <ul>
-          <li class="row">
-            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-              <?php $t->t('Song')?>
-            </div>
-            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-              <?php $t->t('Artist')?>
-            </div>
-            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-              <?php $t->t('Album')?>
-            </div>
-          </li>
-        </ul>
-        <ul id="songList">
-          <li class="hidden"></li>
-          <?php foreach($tracks as $track) {?>
-            <li class="row">
-              <a href="/?p=addTrack&id=<?php echo $track->id?>" class="addTrack" title="<?php $t->t('Add to playlist')?>">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-              </a>
-              <div class="col-xs-11 col-sm-5 col-md-5 col-lg-5" data-title="<?php $t->t('Song')?>">
-                <?php echo $track->name?>
-              </div>
-              <div class="col-xs-11 col-sm-3 col-md-3 col-lg-3" data-title="<?php $t->t('Artist')?>">
-                <a href="/?p=artist&id=<?php echo $track->idArtist?>" class="async"><?php echo $track->artist?></a>
-              </div>
-              <div class="col-xs-11 col-sm-3 col-md-3 col-lg-3" data-title="<?php $t->t('Album')?>">
-                <a href="/?p=album&id=<?php echo $track->idAlbum?>" class="async"><?php echo $track->album?></a>
-              </div>
-            </li>
-          <?php }?>
-        </ul>
-        <nav>
-          <ul class="pager" id="songList-pagination" style="display: none;">
-            <li class="previous"><a id="songList-previous" class="btn btn-default disabled" onclick="scrollToTop();"><i class="fa fa-chevron-left" aria-hidden="true" style="font-size: 13px;"></i>&nbsp;<?php $t->t('Previous')?></a></li>
-            <li class="next"><a id="songList-next" class="btn btn-default" onclick="scrollToTop();"><?php $t->t('Next')?>&nbsp;<i class="fa fa-chevron-right" aria-hidden="true" style="font-size: 13px;"></i></a></li>
-          </ul>
-        </nav>
-      </div>
     <?php }?>
   </div>
 </div>

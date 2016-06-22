@@ -1,5 +1,4 @@
 // PLAYLIST UPDATER
-var playlistUpdater
 function reloadPlaylist() {
   if ($('#playlistWrapper').length) {
     $.get('/?p=playlistAsync&content_only', function(data) {
@@ -8,15 +7,15 @@ function reloadPlaylist() {
     });
   }
 }
+var playlistUpdater = null;
 $('body').on('loadEnd', function() {
-  if (playlistUpdater == null) {
-    playlistUpdater = setInterval(function(){reloadPlaylist();}, 4500);
+  if (!playlistUpdater) {
+    playlistUpdater = setInterval(function(){reloadPlaylist();}, 4000);
   }
 });
 $('body').on('loadBegin', function() {
-  if (playlistUpdater) {
-    playlistUpdater = null
-  }
+  clearInterval(playlistUpdater);
+  playlistUpdater = null;
 });
 reloadPlaylist();
 // PLAYLIST UPDATER END

@@ -9,7 +9,22 @@
     <link rel="stylesheet" href="/template/style/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/template/style/css/animate.css">
     <link rel="stylesheet" href="/template/style/css/global.css">
+
     <link rel="icon" type="image/png" href="/template/style/graphics/favicon.png">
+    <meta name="application-name" content="Fonograf"/>
+    <meta name="msapplication-square70x70logo" content="/template/style/graphics/favicon.png"/>
+    <meta name="msapplication-square150x150logo" content="/template/style/graphics/favicon.png"/>
+    <meta name="msapplication-wide310x150logo" content="/template/style/graphics/faviconBig.png"/>
+    <meta name="msapplication-square310x310logo" content="/template/style/graphics/faviconBig.png"/>
+    <meta name="msapplication-TileColor" content="#222222"/>
+    <link rel="apple-touch-icon" sizes="57x57" href="/template/style/graphics/favicon.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/template/style/graphics/favicon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/template/style/graphics/favicon.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/template/style/graphics/favicon.png">
+    <link rel="icon" type="image/png" href="/template/style/graphics/favicon.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/template/style/graphics/favicon.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/template/style/graphics/favicon.png" sizes="16x16">
+    <meta name="theme-color" content="#222222">
   </head>
   <body>
     <?php include('template/menu.cl') ?>

@@ -147,6 +147,39 @@ class MusicPlayer {
     $http = Http::post(self::$url, $post);
     if ($http == 200) {
       self::populateState();
+      Colors::setColor('#00FF00');
+      Colors::blinkLeds(0,0.2,1);
+      return true;
+    }
+    Colors::setColor('#FF0000');
+    Colors::blinkLeds(0,0.2,1);
+    return false;
+  }
+  public static function addListToPlaylist($listOfFiles) {
+    if (is_array($listOfFiles)){
+      foreach ($listOfFiles as $file) {
+        $filePath = $file->path.'/'.$file->file;
+        if (!self::addToPlaylist($filePath)) {
+          return false;
+        }
+      }
+    }
+    else {
+      return false;
+    }
+    self::populateState();
+    Colors::setColor('#00FF00');
+    Colors::blinkLeds(0,0.1,4);
+    return true;
+  }
+  public static function emptyPlaylist() {
+    $post = array(
+      'secret' => _PLAYER_SECRET_,
+      'command' => 'emptyPlaylist',
+    );
+    $http = Http::post(self::$url, $post);
+    if ($http == 200) {
+      self::populateState();
       return true;
     }
     return false;
@@ -154,7 +187,7 @@ class MusicPlayer {
   public static function getPlaylist() {
     $post = array(
       'secret' => _PLAYER_SECRET_,
-      'command' => 'playlist',
+      'command' => 'getPlaylist',
     );
     $http = Http::get(self::$url, $post);
     if ($http->status == 200) {

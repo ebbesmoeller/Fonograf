@@ -9,30 +9,36 @@
     <link rel="icon" type="image/png" href="/template/style/graphics/favicon.png">
   </head>
   <body id="noConnection">
-    <div id="mainContent">
-      <img src="/template/style/graphics/logoWhite.png"/>
-      <h2><?php $t->t('No connection to music player!')?></h2>
-      <br />
-      <br />
-      <a href="javascript:history.go(0);" class="btn btn-primary"><i class="fa fa-refresh fa-spin fa-fw" aria-hidden="true"></i>&nbsp;<?php $t->t('Reload page')?></a>
+    <?php if (!Post::getQuery('content_only')) {?>
+      <div id="mainContent">
+        <img src="/template/style/graphics/logoWhite.png"/>
+        <h2><?php $t->t('No connection to music player!')?></h2>
+        <br />
+        <br />
+        <a href="javascript:history.go(0);" class="btn btn-primary"><i class="fa fa-refresh fa-spin fa-fw" aria-hidden="true"></i>&nbsp;<?php $t->t('Reload page')?></a>
 
-    </div><!-- Main content end -->
-    <script src="/template/style/js/jquery-2.2.3.min.js"></script>
-    <script src="/template/style/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/template/style/js/global.js"></script>
-    <script>
-      $(document).ready(function(){
-        $('body').addClass('ready');
-        setTimeout(function(){
+      </div><!-- Main content end -->
+      <script src="/template/style/js/jquery-2.2.3.min.js"></script>
+      <script src="/template/style/bootstrap/js/bootstrap.min.js"></script>
+      <script src="/template/style/js/global.js"></script>
+      <script>
+        $(document).ready(function(){
+          $('body').addClass('ready');
+          setTimeout(function(){
+            triggerLoaded();
+          }, 2000);
+        });
+        $(window).bind("load", function() {
           triggerLoaded();
-        }, 2000);
-      });
-      $(window).bind("load", function() {
-        triggerLoaded();
-      });
-      function triggerLoaded() {
-        $('body').addClass('loaded');
-      }
-    </script>
+        });
+        function triggerLoaded() {
+          $('body').addClass('loaded');
+        }
+      </script>
+    <?php } else {?>
+      <script type="text/javascript">
+        location.reload();
+      </script>
+    <?php }?>
   </body>
 </html>

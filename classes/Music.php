@@ -146,6 +146,6 @@ class Music {
   public static function getAlbumArt($idAlbum) {
     $idAlbum = (int)Database::cleanInput($idAlbum);
     $albumPath = html_entity_decode(Database::getRow('SELECT `path` FROM `tracks` WHERE `id_album`='.$idAlbum.' LIMIT 1;')['path']);
-    return glob($albumPath.'/*.{jpg,jpeg,png,gif}',GLOB_BRACE);
+    return glob($albumPath.'/*.{jpg,jpeg,png,gif,JPG,JPEG,PNG,GIF}',GLOB_BRACE);
   }
 }

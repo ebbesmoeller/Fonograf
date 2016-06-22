@@ -16,7 +16,6 @@ playlistFile = '/tmp/musicPlayer/playlist'
 def cleanFilePath(path):
     path = path.replace("'", "\\'")
     path = path.replace('"', '\\"')
-    # path = path.replace(' ', '\\ ')
     return path
 
 # CLASSES
@@ -55,13 +54,13 @@ class musicPlayer (threading.Thread):
         self.mPlayer = MPlayer()
         self.currentlyPlaying = ''
         self.playlistCount = 0
-        self.currentIndex = 0
+        self.currentIndex = -1
         self.loopingPlayback = False
         self.volume = 25
         self.pause = False
         self.mute = False
     def run(self):
-        time.sleep(3)
+        time.sleep(2)
         self.setVolume(self.volume)
         self.mPlayer.command('loadfile "'+baseDir+'/../effects/start.mp3"')
         self.setVolume(self.volume)
@@ -75,17 +74,16 @@ class musicPlayer (threading.Thread):
 
         noCount = 0
         self.currentlyPlaying = ''
-        lines = [line.rstrip('\n') for line in open(playlistFile)]
+        lines = self.currentPlaylist()
         if lines:
-            if 0 <= self.currentIndex < len(lines):
-                file = lines[self.currentIndex]
-                print('Playing: '+file)
+            if -1 <= self.currentIndex < len(lines)-1:
+                file = lines[self.currentIndex+1]
                 self.currentlyPlaying = file
                 self.mPlayer.commandNoReturn('loadfile "'+cleanFilePath(file)+'"')
                 self.currentIndex = self.currentIndex+1
             else:
                 if self.loopingPlayback:
-                    self.currentIndex = 0
+                    self.currentIndex = -1
                 self.currentlyPlaying = ''
         time.sleep(0.1)
 
@@ -105,34 +103,37 @@ class musicPlayer (threading.Thread):
         elif not self.mute:
             print 'Muted'
             self.mute = True
+    def stopPlayer(self):
+        self.mPlayer.commandNoReturn('stop')
     def emptyPlaylist(self):
         self.playlistCount == 0
         os.system('cat /dev/null > '+playlistFile)
     def skipToIndex(self, index):
         self.mPlayer.commandNoReturn('stop')
-        self.currentIndex = int(index)
+        self.currentIndex = int(index)-1
     def removeIndex(self, index):
-        currentIndex = self.currentIndex+1
-        if currentIndex > int(index):
-            self.currentIndex = int(currentIndex)-1
-        if currentIndex == int(index):
+        currentIndex = int(self.currentIndex)
+        requestedIndex = int(index)
+        if currentIndex > requestedIndex:
+            self.currentIndex = currentIndex-1
+        if currentIndex == requestedIndex:
             self.mPlayer.commandNoReturn('stop')
         counter = 0
         currentPlaylist = self.currentPlaylist()
         self.emptyPlaylist()
         for track in currentPlaylist:
-            if counter != int(index):
+            if counter != requestedIndex:
                 self.addToPlaylist(track)
             counter = counter+1
     def setPrevTrack(self):
         if self.currentlyPlaying != '':
-            newIndex = self.currentIndex-2
-            if newIndex >= 0:
+            newIndex = self.currentIndex-1
+            if newIndex > -1:
                 self.skipToIndex(newIndex)
     def setNextTrack(self):
         if self.currentlyPlaying != '':
-            if self.currentIndex <= self.playlistCount-1:
-                self.skipToIndex(self.currentIndex)
+            if self.currentIndex < self.playlistCount-1:
+                self.skipToIndex(self.currentIndex+1)
     def setVolume(self, percentage):
         self.volume = int(percentage)
         self.mPlayer.commandNoReturn('set volume '+str(percentage))
@@ -144,19 +145,15 @@ class musicPlayer (threading.Thread):
             os.system('echo "'+file+'" >> '+playlistFile)
         return
     def playerState(self):
-        indexNumber = self.currentIndex-1
-        if self.currentIndex < 0:
-            indexNumber = 0
-        state = [
-            {
+        indexNumber = self.currentIndex
+        state = {
             'pause': self.pause,
             'mute': self.mute,
             'playing': self.currentlyPlaying,
             'index': indexNumber,
             'loop': self.loopingPlayback,
             'volume': self.volume
-            },
-        ]
+        },
         return state[0]
 class fileInfo(threading.Thread):
     def mp3File(self, filePath):
@@ -213,39 +210,56 @@ def handleRequest(request):
 
     if command == 'playlistAdd':
         music.addToPlaylist(value)
-    if command == 'getFileMeta':
+        return True
+    elif command == 'getFileMeta':
         return json.dumps(fInfo.getFileMeta(value))
-    elif command == 'playlist':
+    elif command == 'getPlaylist':
         return json.dumps(music.currentPlaylist())
+    elif command == 'emptyPlaylist':
+        Thread(target=music.emptyPlaylist, args=()).start()
+        music.currentIndex = -1
+        Thread(target=music.stopPlayer, args=()).start()
+        return True
     elif command == 'setPause':
         Thread(target=music.setPause, args=()).start()
+        return True
     elif command == 'setMute':
         Thread(target=music.setMute, args=()).start()
+        return True
     elif command == 'skipToIndex':
         Thread(target=music.skipToIndex, args=(int(value), )).start()
+        return True
     elif command == 'removeIndex':
         Thread(target=music.removeIndex, args=(int(value), )).start()
+        return True
     elif command == 'setPrevTrack':
         Thread(target=music.setPrevTrack, args=()).start()
+        return True
     elif command == 'setNextTrack':
         Thread(target=music.setNextTrack, args=()).start()
+        return True
     elif command == 'setVolume':
         Thread(target=music.setVolume, args=(value, )).start()
+        return True
     elif command == 'playerState':
         return json.dumps(music.playerState())
     return
 
 class S(BaseHTTPRequestHandler):
     def do_GET(self):
-        requestData = parse_qs(self.path[2:])
-        if requestData:
-            if requestData['secret'][0] == secret:
-                returnData = handleRequest(requestData)
-                self.send_response(200)
-            else :
-                self.send_response(401)
-        else:
-            self.send_response(404)
+        try:
+            requestData = parse_qs(self.path[2:])
+            returnData = None
+            if requestData:
+                if requestData['secret'][0] == secret:
+                    returnData = handleRequest(requestData)
+                    self.send_response(200)
+                else :
+                    self.send_response(401)
+            else:
+                self.send_response(404)
+        except KeyError:
+            self.send_response(500)
 
         self.send_header("Content-type", "application/json")
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -255,15 +269,18 @@ class S(BaseHTTPRequestHandler):
             self.wfile.write(returnData)
 
     def do_POST(self):
-        requestData = parse_qs(self.path[2:])
-        if requestData:
-            if requestData['secret'][0] == secret:
-                handleRequest(requestData)
-                self.send_response(200)
-            else :
-                self.send_response(401)
-        else:
-            self.send_response(404)
+        try:
+            requestData = parse_qs(self.path[2:])
+            if requestData:
+                if requestData['secret'][0] == secret:
+                    handleRequest(requestData)
+                    self.send_response(200)
+                else :
+                    self.send_response(401)
+            else:
+                self.send_response(404)
+        except KeyError:
+            self.send_response(500)
 
         self.send_header("Content-type", "application/json")
         self.send_header("Access-Control-Allow-Origin", "*")

@@ -17,11 +17,16 @@ class Indexation {
     }
   }
   public static function indexMusic() {
+    Colors::rainbow();
     self::indexationProgress(0);
     self::recursiveIndexation(_MUSIC_FOLDER_);
     self::indexFilesByMeta();
+    Colors::setColor('#FF6600');
+    Colors::blinkLeds(0,0.4,3);
     self::putInDatabase();
     self::indexationProgress(100);
+    Colors::setColor('#00FF00');
+    Colors::blinkLeds(0,0.2,4);
   }
 
   private static function getFileMeta($filePath) {
@@ -44,7 +49,7 @@ class Indexation {
         self::recursiveIndexation($item);
       }
       else if (is_file($item)) {
-        $ext = pathinfo($item, PATHINFO_EXTENSION);
+        $ext = strtolower(pathinfo($item, PATHINFO_EXTENSION));
         if (in_array($ext, json_decode(_MUSIC_TYPES_))) {
           self::$filesToIndex[] = array('file'=>str_replace($folder.'/', '', $item), 'folder'=>$folder);
         }

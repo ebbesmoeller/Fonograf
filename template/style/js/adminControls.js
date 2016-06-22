@@ -20,8 +20,9 @@ $(function() {
 // VOLUME KNOB END
 
 // MUTE BUTTON
+var muteButtonClick = null;
 if (!muteButtonClick) {
-  var muteButtonClick = $(document).on('click', '#muteButton', function(e) {
+  muteButtonClick = $('#muteButton').click(function(e) {
     $.post(appendQueryString(window.location.href, {'setMute':''}));
   });
 }
@@ -36,11 +37,15 @@ function setMuteButton(boolean) {
     muteButton.html('<i class=\"fa fa-volume-up\" aria-hidden=\"true\"></i>');
   }
 }
+$('body').on('loadBegin', function() {
+  muteButtonClick = null;
+});
 // MUTE BUTTON END
 
 // PAUSE BUTTON
+var pauseButtonClick = null;
 if (!pauseButtonClick) {
-  var pauseButtonClick = $(document).on('click', '#pauseButton', function(e) {
+  pauseButtonClick = $('#pauseButton').click(function(e) {
     $.post(appendQueryString(window.location.href, {'setPause':''}));
   });
 }
@@ -55,22 +60,33 @@ function setPauseButton(boolean) {
     pauseButton.html('<i class=\"fa fa-pause\" aria-hidden=\"true\"></i>');
   }
 }
+$('body').on('loadBegin', function() {
+  pauseButtonClick = null;
+});
 // PAUSE BUTTON END
 
 // PREVIOUS BUTTON
+var prevButtonClick = null;
 if (!prevButtonClick) {
-  var prevButtonClick = $(document).on('click', '#prevButton', function(e) {
+  prevButtonClick = $('#prevButton').click(function(e) {
     $.post(appendQueryString(window.location.href, {'setPrevTrack':''}));
   });
 }
+$('body').on('loadBegin', function() {
+  prevButtonClick = null;
+});
 // PREVIOUS BUTTON END
 
 // NEXT BUTTON
+var nextButtonClick = null;
 if (!nextButtonClick) {
-  var nextButtonClick = $(document).on('click', '#nextButton', function(e) {
+  nextButtonClick = $('#nextButton').click(function(e) {
     $.post(appendQueryString(window.location.href, {'setNextTrack':''}));
   });
 }
+$('body').on('loadBegin', function() {
+  nextButtonClick = null;
+});
 // NEXT BUTTON END
 
 
@@ -127,5 +143,30 @@ $('body').on('loadEnd', function() {
     stateUpdater = setInterval(function(){updateState();}, 2000);
   }
 });
+$('body').on('loadBegin', function() {
+  clearInterval(stateUpdater);
+  stateUpdater = null;
+});
 updateState();
 // STATE UPDATER END
+// PLAYLIST UPDATER
+function reloadPlaylist() {
+  if ($('#adminPlaylistWrapper').length) {
+    $.get('/?p=adminPlaylistAsync&content_only', function(data) {
+      $('#adminPlaylistWrapper').html(data);
+      $('#adminPlaylistWrapper').addClass('loaded');
+    });
+  }
+}
+var playlistUpdater = null;
+$('body').on('loadEnd', function() {
+  if (!playlistUpdater) {
+    playlistUpdater = setInterval(function(){reloadPlaylist();}, 4500);
+  }
+});
+$('body').on('loadBegin', function() {
+  clearInterval(playlistUpdater);
+  playlistUpdater = null;
+});
+reloadPlaylist();
+// PLAYLIST UPDATER END

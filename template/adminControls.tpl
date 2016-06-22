@@ -1,24 +1,26 @@
 <?php
-  if (!Authentication::isAuthenticated()) {
-    header('Location: /?p=adminLogin');
-  }
+  Authentication::lockedDownPage();
 
   $playerState = MusicPlayer::getInstance()->getPlayerState();
   if (Post::getQuery('setPause')) {
     MusicPlayer::setPause();
+    Colors::setColor('#00ffff');
+    Colors::blinkLeds(0,0.1,2);
   }
   if (Post::getQuery('setPrevTrack')) {
     MusicPlayer::setPrevTrack();
+    Colors::setColor('#00ffff');
+    Colors::blinkLeds(0,0.1,1);
   }
   if (Post::getQuery('setNextTrack')) {
     MusicPlayer::setNextTrack();
+    Colors::setColor('#00ffff');
+    Colors::blinkLeds(0,0.1,1);
   }
   if (Post::getQuery('setMute')) {
     MusicPlayer::setMute();
-  }
-  if (Post::getQuery('skipToIndex')) {
-    $index = (int)Post::getQuery('skipToIndex');
-    MusicPlayer::skipToIndex($index);
+    Colors::setColor('#000000');
+    Colors::blinkLeds(0,0.1,4);
   }
   if (Post::getQuery('setVolume')) {
     $percentage = (int)Post::getQuery('setVolume');
@@ -60,10 +62,9 @@
   </div>
 </div>
 
-<div id="playlistWrapper"></div>
+<div id="adminPlaylistWrapper"></div>
 <?php
 $javascripts[] = "
   <script src=\"/template/style/js/adminControls.js\"></script>
-  <script src=\"/template/style/js/adminPlaylist.js\"></script>
 ";
 ?>

@@ -74,6 +74,7 @@ function reloadAsync(url) {
   scrollToTop();
   $('#loader').show();
   $('body').removeClass('ready').removeClass('loaded');
+  console.log(appendQueryString(url, {'content_only':''}));
   $.get(appendQueryString(url, {'content_only':''}), function(data) {
     $( "#mainContent" ).html( data );
     history.pushState('data', '', url);
@@ -111,7 +112,7 @@ function getParameterByName(name, url) {
 $(document).on('click', 'a.addTrack', function(e) {
   e.preventDefault();
   var link = $(this);
-  if (!link.hasClass('pressed')) {
+  if (!link.hasClass('pressed') && !link.hasClass('getting')) {
     link.addClass('getting');
     $.post(link[0].href, function() {
       link.removeClass('getting');

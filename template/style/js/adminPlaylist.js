@@ -1,24 +1,29 @@
-// PLAYLIST UPDATER
-var playlistUpdater
-function reloadPlaylist() {
-  if ($('#playlistWrapper').length) {
-    $.get('/?p=adminPlaylistAsync&content_only', function(data) {
-      $('#playlistWrapper').html(data);
-      $('#playlistWrapper').addClass('loaded');
+// EMPTY PLAYLIST
+$('#emptyPlaylist').click(function(e) {
+  e.preventDefault();
+  var button = $(this);
+  if (confirm(txtVar01)) {
+    $.post(appendQueryString(button[0].href, {'content_only':''}), function() {
+      $('#songList li').slideUp();
     });
   }
-}
-$('body').on('loadEnd', function() {
-  if (playlistUpdater == null) {
-    playlistUpdater = setInterval(function(){reloadPlaylist();}, 4500);
-  }
 });
-reloadPlaylist();
-// PLAYLIST UPDATER END
+// EMPTY PLAYLIST END
 // SKIP TO INDEX
-  var skipButtonClick = $(document).on('click', '.skipButton', function(e) {
-    e.preventDefault();
-    $.post(appendQueryString($(this)[0].href, {'content_only':''}));
-    skipButtonClick = null;
-  });
+$('.skipButton').click(function(e) {
+  e.preventDefault();
+  $.post(appendQueryString($(this)[0].href, {'content_only':''}));
+  reloadPlaylist();
+});
 // SKIP TO INDEX END
+// REMOVE INDEX
+$('.removeButton').click(function(e) {
+  e.preventDefault();
+  var button = $(this);
+  $.post(appendQueryString(button[0].href, {'content_only':''}), function() {
+    button.parent().parent().slideUp(function(){
+      reloadPlaylist();
+    });
+  });
+});
+// REMOVE INDEX END

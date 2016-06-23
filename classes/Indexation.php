@@ -103,10 +103,12 @@ class Indexation {
         $artist = Database::getInstance()->getRow('SELECT * FROM `artists` WHERE `name`=\''.$track->artist.'\';');
       }
 
-      $album = Database::getInstance()->getRow('SELECT * FROM `albums` WHERE `name`=\''.$track->album.'\';');
+      $pathHash = md5($track->path);
+
+      $album = Database::getInstance()->getRow('SELECT * FROM `albums` WHERE `name`=\''.$track->album.'\' AND `pathHash`=\''.$pathHash.'\';');
       if ($album == null) {
-        Database::getInstance()->execute('INSERT INTO `albums`(`name`) VALUES(\''.$track->album.'\');');
-        $album = Database::getInstance()->getRow('SELECT * FROM `albums` WHERE `name`=\''.$track->album.'\';');
+        Database::getInstance()->execute('INSERT INTO `albums`(`name`,`pathHash`) VALUES(\''.$track->album.'\',\''.$pathHash.'\');');
+        $album = Database::getInstance()->getRow('SELECT * FROM `albums` WHERE `name`=\''.$track->album.'\' AND `pathHash`=\''.$pathHash.'\';');
       }
 
       Database::getInstance()->execute('INSERT INTO `tracks`(`name`,`path`,`file`,`id_album`,`id_artist`,`track`,`genre`,`year`) VALUES(\''.$track->name.'\',\''.$track->path.'\',\''.$track->file.'\','.$album['id'].','.$artist['id'].','.$track->track.',\''.$track->genre.'\','.$track->year.');');

@@ -68,7 +68,7 @@ class musicPlayer (threading.Thread):
             self.playlister()
     def playlister(self):
         noCount = 0
-        while noCount < 5:
+        while noCount < 8:
             if not self.mPlayer.command('get_percent_pos'):
                 noCount = noCount + 1
 
@@ -85,7 +85,7 @@ class musicPlayer (threading.Thread):
                 if self.loopingPlayback:
                     self.currentIndex = -1
                 self.currentlyPlaying = ''
-        time.sleep(0.1)
+        time.sleep(0.15)
 
     def setPause(self):
         self.mPlayer.commandNoReturn('pause')

@@ -635,9 +635,9 @@ h3 {
   border-top: 0;
 }
 @media(max-width: 767px) {
-  .artist .albums > ul > li:nth-child(2) {
+  /*.artist .albums > ul > li:nth-child(2) {
     border-top: 1px dotted #2b2b2b;
-  }
+  }*/
   .artist .artistBio {
     font-size: 12px;
   }
